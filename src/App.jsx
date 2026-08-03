@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { jsPDF } from "jspdf";
 
 const SUBJECT_TOPICS = {
   Physics: [
@@ -83,7 +84,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [selected, setSelected] = useState({});
   const [numericInput, setNumericInput] = useState({});
-  const [revealed, setRevealed] = useState({});
+  const [submitted, setSubmitted] = useState(false);
   const resultsRef = useRef(null);
 
   function handleSubjectChange(newSubject) {
@@ -101,7 +102,7 @@ export default function App() {
     setQuestions([]);
     setSelected({});
     setNumericInput({});
-    setRevealed({});
+    setSubmitted(false);
 
     try {
       const response = await fetch("/api/generate", {
@@ -139,12 +140,102 @@ export default function App() {
   }
 
   function selectMcq(qid, idx) {
-    if (revealed[qid]) return;
+    if (submitted) return;
     setSelected((s) => ({ ...s, [qid]: idx }));
   }
 
-  function reveal(qid) {
-    setRevealed((r) => ({ ...r, [qid]: true }));
+  function isCorrect(q) {
+    if (q.type === "mcq") return selected[q.id] === q.correctIndex;
+    const userVal = (numericInput[q.id] ?? "").trim();
+    return userVal !== "" && userVal === String(q.correctValue).trim();
+  }
+
+  function handleSubmitTest() {
+    setSubmitted(true);
+    setTimeout(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+  }
+
+  function handleRetake() {
+    setSelected({});
+    setNumericInput({});
+    setSubmitted(false);
+  }
+
+  const attemptedCount = questions.filter(
+    (q) => (q.type === "mcq" ? selected[q.id] !== undefined : (numericInput[q.id] ?? "").trim() !== "")
+  ).length;
+
+  const correctCount = submitted ? questions.filter((q) => isCorrect(q)).length : 0;
+  const totalMarks = submitted
+    ? questions.reduce((sum, q) => {
+        const attempted = q.type === "mcq" ? selected[q.id] !== undefined : (numericInput[q.id] ?? "").trim() !== "";
+        if (!attempted) return sum;
+        return sum + (isCorrect(q) ? 4 : -1);
+      }, 0)
+    : 0;
+
+  function downloadPdf() {
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 48;
+    const maxWidth = pageWidth - margin * 2;
+    let y = margin;
+
+    function ensureSpace(lineHeight) {
+      if (y + lineHeight > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+    }
+
+    function writeText(text, { fontSize = 11, bold = false, indent = 0, spaceAfter = 6 } = {}) {
+      doc.setFontSize(fontSize);
+      doc.setFont("helvetica", bold ? "bold" : "normal");
+      const lines = doc.splitTextToSize(text, maxWidth - indent);
+      const lineHeight = fontSize * 1.35;
+      lines.forEach((line) => {
+        ensureSpace(lineHeight);
+        doc.text(line, margin + indent, y);
+        y += lineHeight;
+      });
+      y += spaceAfter;
+    }
+
+    writeText("JEE Main Practice Paper", { fontSize: 18, bold: true, spaceAfter: 4 });
+    writeText(`Subject: ${subject}    Topic: ${topic}    Difficulty: ${difficulty}`, { fontSize: 10, spaceAfter: 2 });
+    writeText(`Marking scheme: +4 for correct, -1 for incorrect`, { fontSize: 10, spaceAfter: 16 });
+
+    questions.forEach((q, i) => {
+      writeText(`Q${i + 1}. [${q.difficultyTag || "Medium"}]`, { fontSize: 11, bold: true, spaceAfter: 2 });
+      writeText(q.question, { fontSize: 11, spaceAfter: 4 });
+      if (q.type === "mcq" && Array.isArray(q.options)) {
+        q.options.forEach((opt, idx) => {
+          writeText(`(${String.fromCharCode(65 + idx)})  ${opt}`, { fontSize: 10.5, indent: 14, spaceAfter: 2 });
+        });
+        y += 8;
+      } else {
+        writeText("Answer: _______________________", { fontSize: 10.5, indent: 14, spaceAfter: 12 });
+      }
+    });
+
+    doc.addPage();
+    y = margin;
+    writeText("Answer Key & Explanations", { fontSize: 16, bold: true, spaceAfter: 12 });
+
+    questions.forEach((q, i) => {
+      const answerText =
+        q.type === "mcq"
+          ? `(${String.fromCharCode(65 + q.correctIndex)})  ${q.options[q.correctIndex]}`
+          : `${q.correctValue}`;
+      writeText(`Q${i + 1}. Correct Answer: ${answerText}`, { fontSize: 11, bold: true, spaceAfter: 2 });
+      writeText(`Explanation: ${q.explanation || "—"}`, { fontSize: 10.5, spaceAfter: 12 });
+    });
+
+    const safeTopic = topic.replace(/[^a-z0-9]+/gi, "_").slice(0, 40);
+    doc.save(`JEE_${subject}_${safeTopic}.pdf`);
   }
 
   return (
@@ -365,18 +456,84 @@ export default function App() {
         .jee-numeric-input.correct { border-color: var(--green-ok); background: var(--green-ok-bg); color: var(--green-ok); }
         .jee-numeric-input.wrong { border-color: var(--red-pen); background: var(--red-pen-bg); color: var(--red-pen); }
 
-        .jee-reveal-btn {
+        .jee-toolbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 4px;
+        }
+        .jee-attempted {
           font-family: 'IBM Plex Mono', monospace;
           font-size: 12px;
           color: var(--ink-soft);
-          background: transparent;
+        }
+        .jee-toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .jee-secondary-btn {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 12px;
+          color: var(--ink-soft);
+          background: var(--card);
           border: 1px solid var(--paper-line);
           border-radius: 20px;
-          padding: 7px 14px;
+          padding: 8px 14px;
           cursor: pointer;
-          margin-top: 6px;
         }
-        .jee-reveal-btn:hover { border-color: var(--ink-soft); color: var(--ink); }
+        .jee-secondary-btn:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+        .jee-score-panel {
+          background: var(--card);
+          border-radius: 10px;
+          padding: 16px 22px;
+          box-shadow: 0 1px 2px var(--shadow), 0 8px 24px -14px var(--shadow);
+          border: 1px solid rgba(29,42,68,0.06);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        .jee-score-main {
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 700;
+        }
+        .jee-score-num { font-size: 26px; color: var(--green-ok); }
+        .jee-score-den { font-size: 14px; color: var(--ink-soft); margin-left: 4px; }
+        .jee-score-marks {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 12.5px;
+          color: var(--ink-soft);
+        }
+        .jee-score-marks span { color: var(--ink-faint); }
+
+        .jee-result-tag {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          padding: 3px 8px;
+          border-radius: 20px;
+          font-weight: 600;
+        }
+        .jee-result-correct { background: var(--green-ok-bg); color: var(--green-ok); }
+        .jee-result-wrong { background: var(--red-pen-bg); color: var(--red-pen); }
+
+        .jee-submit-test-btn {
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 600;
+          font-size: 15px;
+          color: #fff;
+          background: var(--red-pen);
+          border: none;
+          border-radius: 8px;
+          padding: 14px 20px;
+          cursor: pointer;
+          margin-top: 4px;
+          transition: background 0.15s ease, transform 0.1s ease;
+        }
+        .jee-submit-test-btn:hover { background: #942024; }
+        .jee-submit-test-btn:active { transform: scale(0.99); }
 
         .jee-answer-panel {
           margin-top: 14px;
@@ -457,19 +614,48 @@ export default function App() {
             <div className="jee-empty">Choose a subject and topic, then generate your first paper.</div>
           )}
 
+          {!loading && questions.length > 0 && (
+            <div className="jee-toolbar">
+              <span className="jee-attempted">
+                {submitted ? "Test submitted" : `${attemptedCount} / ${questions.length} attempted`}
+              </span>
+              <div className="jee-toolbar-actions">
+                <button className="jee-secondary-btn" onClick={downloadPdf}>Download Question Paper (PDF)</button>
+                {submitted && (
+                  <button className="jee-secondary-btn" onClick={handleRetake}>Retake</button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {!loading && submitted && questions.length > 0 && (
+            <div className="jee-score-panel">
+              <div className="jee-score-main">
+                <span className="jee-score-num">{correctCount}</span>
+                <span className="jee-score-den">/ {questions.length} correct</span>
+              </div>
+              <div className="jee-score-marks">Marks: {totalMarks} <span>(+4 / −1 scheme, unattempted = 0)</span></div>
+            </div>
+          )}
+
           {!loading && questions.map((q, i) => {
             const tagClass =
               q.difficultyTag === "Easy" ? "jee-tag-easy" :
               q.difficultyTag === "Hard" ? "jee-tag-hard" : "jee-tag-medium";
-            const isRevealed = !!revealed[q.id];
             const userChoice = selected[q.id];
             const userNumeric = numericInput[q.id] ?? "";
+            const correct = submitted ? isCorrect(q) : null;
 
             return (
               <div className="jee-card" key={q.id}>
                 <div className="jee-card-head">
                   <span className="jee-qnum">Q{i + 1}</span>
                   <span className={`jee-tag ${tagClass}`}>{q.difficultyTag || "Medium"}</span>
+                  {submitted && (
+                    <span className={`jee-result-tag ${correct ? "jee-result-correct" : "jee-result-wrong"}`}>
+                      {correct ? "Correct" : "Incorrect"}
+                    </span>
+                  )}
                   <span className="jee-marks">+4 / −1</span>
                 </div>
                 <p className="jee-question-text">{q.question}</p>
@@ -479,7 +665,7 @@ export default function App() {
                     {q.options.map((opt, idx) => {
                       const letter = String.fromCharCode(65 + idx);
                       let bubbleClass = "jee-bubble";
-                      if (isRevealed) {
+                      if (submitted) {
                         if (idx === q.correctIndex) bubbleClass += " correct";
                         else if (idx === userChoice) bubbleClass += " wrong";
                       } else if (idx === userChoice) {
@@ -501,25 +687,19 @@ export default function App() {
                     <input
                       className={
                         "jee-numeric-input" +
-                        (isRevealed
-                          ? (userNumeric.trim() === String(q.correctValue).trim() ? " correct" : " wrong")
-                          : "")
+                        (submitted ? (correct ? " correct" : " wrong") : "")
                       }
                       type="text"
                       inputMode="decimal"
                       value={userNumeric}
-                      disabled={isRevealed}
+                      disabled={submitted}
                       onChange={(e) => setNumericInput((n) => ({ ...n, [q.id]: e.target.value }))}
                       placeholder="—"
                     />
                   </div>
                 )}
 
-                {!isRevealed && (
-                  <button className="jee-reveal-btn" onClick={() => reveal(q.id)}>Reveal answer</button>
-                )}
-
-                {isRevealed && (
+                {submitted && (
                   <div className="jee-answer-panel">
                     <div className="jee-answer-line">
                       {q.type === "mcq"
@@ -532,6 +712,12 @@ export default function App() {
               </div>
             );
           })}
+
+          {!loading && !submitted && questions.length > 0 && (
+            <button className="jee-submit-test-btn" onClick={handleSubmitTest}>
+              Submit Test
+            </button>
+          )}
         </div>
       </div>
     </div>
