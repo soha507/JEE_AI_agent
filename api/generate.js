@@ -1,30 +1,32 @@
-const SUBJECT_TOPICS = {
-  Physics: true,
-  Chemistry: true,
-  Mathematics: true,
-};
+function buildExamPrompt(subjects, difficulty, perSubject) {
+  const sectionsText = subjects
+    .map((s) => `- ${s.name}: use ONLY these topics — ${s.topics.join(", ")}`)
+    .join("\n");
 
-function buildPrompt(subject, topic, difficulty, count) {
   return `You are an expert JEE Main question setter with full knowledge of previous years' JEE Main papers (Physics, Chemistry, Mathematics, 2019-2025).
 
-Generate ${count} original practice questions for:
-Subject: ${subject}
-Topic: ${topic}
+Generate a JEE Main-style mock exam made up of these sections:
+${sectionsText}
+
 Difficulty: ${difficulty === "Mixed" ? "a mix of easy, medium and hard" : difficulty}
 
 Rules:
-- Style, phrasing and difficulty must closely match real JEE Main previous year questions on this exact topic (do not copy any real question verbatim, write fresh ones inspired by the same patterns).
-- Use a mix of question types: some "mcq" (single correct, 4 options) and some "numerical" (value-type answer, no options), roughly balanced.
+- For EACH section listed above, generate exactly ${perSubject} original practice questions, drawn only from that section's listed topics, spread across those topics rather than repeating one topic every time.
+- Every question object must include a "subject" field set to exactly one of the section names above.
+- Style, phrasing and difficulty must closely match real JEE Main previous year questions on these topics (do not copy any real question verbatim, write fresh ones inspired by the same patterns).
+- Within each section, use a mix of question types: some "mcq" (single correct, 4 options) and some "numerical" (value-type answer, no options), roughly balanced.
 - Use plain-text math notation only: x^2, sqrt(2), pi, Delta, ->, degree symbol, subscripts like v_0. No LaTeX commands, no markdown.
 - Each explanation must be short: 1-3 sentences, just the key steps/formula used, no filler.
 - For "numerical" questions give correctValue as a plain number (string), rounded sensibly (e.g. "2.5", "12", "-3.14").
 - For "mcq" questions give exactly 4 options and correctIndex (0-based).
 - difficultyTag must be one of "Easy", "Medium", "Hard".
+- "id" must be unique across the ENTIRE array (e.g. "phy_1", "phy_2", "chem_1", "math_1").
 
-Respond with ONLY a raw JSON array, no markdown fences, no commentary, matching exactly this shape:
+Respond with ONLY a single raw JSON array containing every question from every section (do not group into nested objects), no markdown fences, no commentary, matching exactly this shape:
 [
   {
-    "id": "q1",
+    "id": "phy_1",
+    "subject": "Physics",
     "type": "mcq",
     "difficultyTag": "Medium",
     "question": "...",
@@ -33,7 +35,8 @@ Respond with ONLY a raw JSON array, no markdown fences, no commentary, matching 
     "explanation": "..."
   },
   {
-    "id": "q2",
+    "id": "chem_1",
+    "subject": "Chemistry",
     "type": "numerical",
     "difficultyTag": "Hard",
     "question": "...",
@@ -63,15 +66,31 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { subject, topic, difficulty, count } = req.body || {};
+  const { subjects, difficulty, questionsPerSubject } = req.body || {};
 
-  if (!subject || !topic || !difficulty) {
-    res.status(400).json({ error: "Missing subject, topic, or difficulty." });
+  if (!Array.isArray(subjects) || subjects.length === 0) {
+    res.status(400).json({ error: "Select at least one subject." });
+    return;
+  }
+  for (const s of subjects) {
+    if (!s || !s.name || !Array.isArray(s.topics) || s.topics.length === 0) {
+      res.status(400).json({ error: `Subject "${s && s.name}" needs at least one topic selected.` });
+      return;
+    }
+  }
+  if (!difficulty) {
+    res.status(400).json({ error: "Missing difficulty." });
     return;
   }
 
-  const safeCount = Math.min(Math.max(Math.round(Number(count) || 1), 1), 15);
-  const prompt = buildPrompt(subject, topic, difficulty, safeCount);
+  let safePerSubject = Math.min(Math.max(Math.round(Number(questionsPerSubject) || 1), 1), 10);
+  // keep the overall exam within a safe response-size budget
+  const MAX_TOTAL = 30;
+  if (subjects.length * safePerSubject > MAX_TOTAL) {
+    safePerSubject = Math.max(1, Math.floor(MAX_TOTAL / subjects.length));
+  }
+
+  const prompt = buildExamPrompt(subjects, difficulty, safePerSubject);
 
   try {
     const response = await fetch(
@@ -86,7 +105,7 @@ export default async function handler(req, res) {
           contents: [{ role: "user", parts: [{ text: prompt }] }],
           generationConfig: {
             responseMimeType: "application/json",
-            maxOutputTokens: 8192,
+            maxOutputTokens: 16384,
           },
         }),
       }
@@ -119,7 +138,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    res.status(200).json({ questions: parsed });
+    res.status(200).json({ questions: parsed, questionsPerSubject: safePerSubject });
   } catch (err) {
     res.status(500).json({ error: err.message || "Unknown server error." });
   }
