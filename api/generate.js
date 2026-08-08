@@ -64,6 +64,7 @@ async function callGemini(prompt, apiKey, maxOutputTokens) {
         generationConfig: {
           responseMimeType: "application/json",
           maxOutputTokens,
+          thinkingConfig: { thinkingLevel: "low" },
         },
       }),
     }
@@ -104,8 +105,9 @@ async function callGemini(prompt, apiKey, maxOutputTokens) {
 
 async function generateForSubject(subjectName, topics, difficulty, count, apiKey) {
   const prompt = buildSubjectPrompt(subjectName, topics, difficulty, count);
-  // ~350 tokens/question is a safe upper estimate for mcq+explanation; floor of 4096 for small counts
-  const maxOutputTokens = Math.min(32768, Math.max(4096, count * 400 + 1500));
+  // ~350 tokens/question for the answer, plus a cushion for the model's hidden
+  // "thinking" tokens (Gemini 3 Flash cannot fully disable thinking, only minimize it)
+  const maxOutputTokens = Math.min(32768, Math.max(6000, count * 450 + 3500));
 
   let parsed;
   try {
