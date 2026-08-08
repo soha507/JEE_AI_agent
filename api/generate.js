@@ -50,9 +50,7 @@ function cleanJson(text) {
   return t;
 }
 
-async function generateForSubject(subjectName, topics, difficulty, count, apiKey) {
-  const prompt = buildSubjectPrompt(subjectName, topics, difficulty, count);
-
+async function callGemini(prompt, apiKey, maxOutputTokens) {
   const response = await fetch(
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
     {
@@ -65,7 +63,7 @@ async function generateForSubject(subjectName, topics, difficulty, count, apiKey
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           responseMimeType: "application/json",
-          maxOutputTokens: 8192,
+          maxOutputTokens,
         },
       }),
     }
@@ -73,21 +71,55 @@ async function generateForSubject(subjectName, topics, difficulty, count, apiKey
 
   if (!response.ok) {
     const errText = await response.text().catch(() => "");
-    throw new Error(`${subjectName}: Gemini API error (${response.status}): ${errText.slice(0, 200)}`);
+    const err = new Error(`Gemini API error (${response.status}): ${errText.slice(0, 200)}`);
+    err.retryable = response.status === 429 || response.status >= 500;
+    throw err;
   }
 
   const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("") || "";
+  const candidate = data?.candidates?.[0];
+  const text = candidate?.content?.parts?.map((p) => p.text || "").join("") || "";
+  const finishReason = candidate?.finishReason;
 
   if (!text) {
-    throw new Error(`${subjectName}: model returned no text content.`);
+    const err = new Error("model returned no text content.");
+    err.retryable = true;
+    throw err;
   }
+
+  if (finishReason === "MAX_TOKENS") {
+    const err = new Error("response was cut off before finishing (question count too high for one call).");
+    err.retryable = false;
+    throw err;
+  }
+
+  try {
+    return JSON.parse(cleanJson(text));
+  } catch (parseErr) {
+    const err = new Error("could not parse model output as JSON.");
+    err.retryable = true;
+    throw err;
+  }
+}
+
+async function generateForSubject(subjectName, topics, difficulty, count, apiKey) {
+  const prompt = buildSubjectPrompt(subjectName, topics, difficulty, count);
+  // ~350 tokens/question is a safe upper estimate for mcq+explanation; floor of 4096 for small counts
+  const maxOutputTokens = Math.min(32768, Math.max(4096, count * 400 + 1500));
 
   let parsed;
   try {
-    parsed = JSON.parse(cleanJson(text));
-  } catch (parseErr) {
-    throw new Error(`${subjectName}: could not parse model output as JSON.`);
+    parsed = await callGemini(prompt, apiKey, maxOutputTokens);
+  } catch (firstErr) {
+    if (!firstErr.retryable) {
+      throw new Error(`${subjectName}: ${firstErr.message}`);
+    }
+    // one automatic retry for transient failures (rate limit, blip, occasional bad JSON)
+    try {
+      parsed = await callGemini(prompt, apiKey, maxOutputTokens);
+    } catch (secondErr) {
+      throw new Error(`${subjectName}: ${secondErr.message} (after retry)`);
+    }
   }
 
   if (!Array.isArray(parsed) || parsed.length === 0) {
