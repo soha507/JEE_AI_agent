@@ -184,6 +184,9 @@ export default function App() {
       });
 
       setQuestions(safeQuestions);
+      if (Array.isArray(data.partialErrors) && data.partialErrors.length > 0) {
+        setError(`Some sections had trouble generating: ${data.partialErrors.join(" | ")}`);
+      }
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 80);
@@ -826,7 +829,7 @@ export default function App() {
               <input
                 type="number"
                 min={1}
-                max={10}
+                max={25}
                 value={questionsPerSubject}
                 onChange={(e) => setQuestionsPerSubject(e.target.value === "" ? "" : Number(e.target.value))}
                 onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
