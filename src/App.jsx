@@ -86,7 +86,9 @@ export default function App() {
   const [selected, setSelected] = useState({});
   const [numericInput, setNumericInput] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [activeTab, setActiveTab] = useState(null);
   const resultsRef = useRef(null);
+  const tabsRef = useRef(null);
 
   function toggleSubject(subj) {
     setSelectedSubjects((prev) => {
@@ -184,6 +186,7 @@ export default function App() {
       });
 
       setQuestions(safeQuestions);
+      setActiveTab(safeQuestions[0]?.subject ?? null);
       if (Array.isArray(data.partialErrors) && data.partialErrors.length > 0) {
         setError(`Some sections had trouble generating: ${data.partialErrors.join(" | ")}`);
       }
@@ -228,9 +231,13 @@ export default function App() {
     setSubmitted(false);
   }
 
-  const attemptedCount = questions.filter(
-    (q) => (q.type === "mcq" ? selected[q.id] !== undefined : (numericInput[q.id] ?? "").trim() !== "")
-  ).length;
+  function isAttempted(q) {
+    return q.type === "mcq"
+      ? selected[q.id] !== undefined
+      : (numericInput[q.id] ?? "").trim() !== "";
+  }
+
+  const attemptedCount = questions.filter(isAttempted).length;
 
   const correctCount = submitted ? questions.filter((q) => isCorrect(q)).length : 0;
   const totalMarks = submitted
@@ -241,12 +248,20 @@ export default function App() {
       }, 0)
     : 0;
 
-  // Group questions by subject, preserving the order subjects were selected in
-  const sections = selectedSubjects.length > 0
-    ? selectedSubjects
-        .map((subj) => ({ subject: subj, items: questions.filter((q) => q.subject === subj) }))
-        .filter((sec) => sec.items.length > 0)
-    : [{ subject: null, items: questions }];
+  // Group the generated questions by subject (in the order they were generated),
+  // so changing the form after generating never makes questions disappear.
+  const generatedSubjects = [...new Set(questions.map((q) => q.subject))];
+  const sections = generatedSubjects.map((subj) => ({
+    subject: subj,
+    items: questions.filter((q) => q.subject === subj),
+  }));
+
+  function switchTab(subj) {
+    setActiveTab(subj);
+    setTimeout(() => {
+      tabsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 30);
+  }
 
   function downloadPdf() {
     const doc = new jsPDF({ unit: "pt", format: "a4" });
@@ -277,7 +292,7 @@ export default function App() {
     }
 
     writeText("JEE Main Practice Paper", { fontSize: 18, bold: true, spaceAfter: 4 });
-    writeText(`Subjects: ${selectedSubjects.join(", ")}    Difficulty: ${difficulty}`, { fontSize: 10, spaceAfter: 2 });
+    writeText(`Subjects: ${generatedSubjects.join(", ")}    Difficulty: ${difficulty}`, { fontSize: 10, spaceAfter: 2 });
     writeText(`Marking scheme: +4 for correct, -1 for incorrect`, { fontSize: 10, spaceAfter: 16 });
 
     let qNum = 0;
@@ -320,7 +335,7 @@ export default function App() {
       });
     });
 
-    const safeSubjects = selectedSubjects.join("_").replace(/[^a-z0-9_]+/gi, "").slice(0, 40);
+    const safeSubjects = generatedSubjects.join("_").replace(/[^a-z0-9_]+/gi, "").slice(0, 40);
     doc.save(`JEE_${safeSubjects || "Exam"}.pdf`);
   }
 
@@ -544,6 +559,44 @@ export default function App() {
           margin: 6px 0 2px;
         }
         .jee-section { display: flex; flex-direction: column; gap: 18px; }
+
+        .jee-tabs {
+          display: flex;
+          gap: 6px;
+          overflow-x: auto;
+          border-bottom: 1px solid var(--border);
+          scroll-margin-top: 12px;
+        }
+        .jee-tab {
+          flex: 1 1 0;
+          min-width: 110px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+          background: transparent;
+          border: none;
+          border-bottom: 2px solid transparent;
+          color: var(--text-soft);
+          font-family: 'IBM Plex Sans', sans-serif;
+          padding: 10px 12px 9px;
+          cursor: pointer;
+          transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+        }
+        .jee-tab:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+        .jee-tab.active {
+          color: var(--accent-strong);
+          border-bottom-color: var(--accent);
+          background: var(--accent-bg);
+        }
+        .jee-tab-name { font-size: 14px; font-weight: 600; }
+        .jee-tab-meta {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11px;
+          color: var(--text-faint);
+        }
+        .jee-tab.active .jee-tab-meta { color: var(--text-soft); }
+        .jee-tab-nav { display: flex; justify-content: space-between; align-items: center; }
 
         .jee-generate-row {
           display: flex;
@@ -881,13 +934,40 @@ export default function App() {
             </div>
           )}
 
+          {!loading && sections.length > 1 && (
+            <div className="jee-tabs" ref={tabsRef} role="tablist">
+              {sections.map((sec) => {
+                const answered = sec.items.filter(isAttempted).length;
+                const secMarks = sec.items.reduce(
+                  (sum, q) => (isAttempted(q) ? sum + (isCorrect(q) ? 4 : -1) : sum),
+                  0
+                );
+                const isActive = sec.subject === activeTab;
+                return (
+                  <button
+                    key={sec.subject}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={"jee-tab" + (isActive ? " active" : "")}
+                    onClick={() => switchTab(sec.subject)}
+                  >
+                    <span className="jee-tab-name">{sec.subject}</span>
+                    <span className="jee-tab-meta">
+                      {submitted ? `${secMarks} marks` : `${answered}/${sec.items.length}`}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {!loading && questions.length > 0 && (() => {
-            let qNum = 0;
-            return sections.map((sec) => (
-              <div className="jee-section" key={sec.subject || "all"}>
-                {sec.subject && sections.length > 1 && (
-                  <div className="jee-section-header">{sec.subject}</div>
-                )}
+            const activeIdx = Math.max(0, sections.findIndex((s) => s.subject === activeTab));
+            const sec = sections[activeIdx];
+            let qNum = sections.slice(0, activeIdx).reduce((n, s) => n + s.items.length, 0);
+            return (
+              <div className="jee-section" key={sec.subject}>
                 {sec.items.map((q) => {
                   qNum += 1;
                   const tagClass =
@@ -963,8 +1043,23 @@ export default function App() {
                     </div>
                   );
                 })}
+
+                {sections.length > 1 && (
+                  <div className="jee-tab-nav">
+                    {activeIdx > 0 ? (
+                      <button type="button" className="jee-secondary-btn" onClick={() => switchTab(sections[activeIdx - 1].subject)}>
+                        ← {sections[activeIdx - 1].subject}
+                      </button>
+                    ) : <span />}
+                    {activeIdx < sections.length - 1 ? (
+                      <button type="button" className="jee-secondary-btn" onClick={() => switchTab(sections[activeIdx + 1].subject)}>
+                        {sections[activeIdx + 1].subject} →
+                      </button>
+                    ) : <span />}
+                  </div>
+                )}
               </div>
-            ));
+            );
           })()}
 
           {!loading && !submitted && questions.length > 0 && (
