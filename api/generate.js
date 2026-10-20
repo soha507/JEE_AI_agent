@@ -1,30 +1,27 @@
-const SUBJECT_TOPICS = {
-  Physics: true,
-  Chemistry: true,
-  Mathematics: true,
-};
-
-function buildPrompt(subject, topic, difficulty, count) {
+function buildSubjectPrompt(subjectName, topics, difficulty, count) {
   return `You are an expert JEE Main question setter with full knowledge of previous years' JEE Main papers (Physics, Chemistry, Mathematics, 2019-2025).
 
-Generate ${count} original practice questions for:
-Subject: ${subject}
-Topic: ${topic}
+Generate ${count} original JEE Main practice questions for:
+Subject: ${subjectName}
+Topics to draw from (spread across these, don't repeat one topic every time): ${topics.join(", ")}
 Difficulty: ${difficulty === "Mixed" ? "a mix of easy, medium and hard" : difficulty}
 
 Rules:
-- Style, phrasing and difficulty must closely match real JEE Main previous year questions on this exact topic (do not copy any real question verbatim, write fresh ones inspired by the same patterns).
+- Style, phrasing and difficulty must closely match real JEE Main previous year questions on these topics (do not copy any real question verbatim, write fresh ones inspired by the same patterns).
 - Use a mix of question types: some "mcq" (single correct, 4 options) and some "numerical" (value-type answer, no options), roughly balanced.
 - Use plain-text math notation only: x^2, sqrt(2), pi, Delta, ->, degree symbol, subscripts like v_0. No LaTeX commands, no markdown.
 - Each explanation must be short: 1-3 sentences, just the key steps/formula used, no filler.
 - For "numerical" questions give correctValue as a plain number (string), rounded sensibly (e.g. "2.5", "12", "-3.14").
 - For "mcq" questions give exactly 4 options and correctIndex (0-based).
 - difficultyTag must be one of "Easy", "Medium", "Hard".
+- "id" must be unique within this array (e.g. "q1", "q2", ...).
+- Every question object must include "subject": "${subjectName}".
 
-Respond with ONLY a raw JSON array, no markdown fences, no commentary, matching exactly this shape:
+Respond with ONLY a raw JSON array of exactly ${count} questions, no markdown fences, no commentary, matching exactly this shape:
 [
   {
     "id": "q1",
+    "subject": "${subjectName}",
     "type": "mcq",
     "difficultyTag": "Medium",
     "question": "...",
@@ -34,6 +31,7 @@ Respond with ONLY a raw JSON array, no markdown fences, no commentary, matching 
   },
   {
     "id": "q2",
+    "subject": "${subjectName}",
     "type": "numerical",
     "difficultyTag": "Hard",
     "question": "...",
@@ -52,6 +50,121 @@ function cleanJson(text) {
   return t;
 }
 
+const PRIMARY_MODEL = "gemini-3.8-flash";
+// Used only if the primary model keeps failing (e.g. 503 "high demand").
+// If Google renames or retires it, update this one string.
+const FALLBACK_MODEL = "gemini-3.5-flash-lite";
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function friendlyApiError(status) {
+  if (status === 503 || status === 500) {
+    return "Google's AI service is busy right now. Please try again in a minute.";
+  }
+  if (status === 429) {
+    return "The free AI quota is temporarily used up. Please wait a minute and try again.";
+  }
+  return null;
+}
+
+async function callGemini(model, prompt, apiKey, maxOutputTokens) {
+  const generationConfig = { responseMimeType: "application/json", maxOutputTokens };
+  if (model === PRIMARY_MODEL) {
+    generationConfig.thinkingConfig = { thinkingLevel: "low" };
+  }
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey,
+      },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => "");
+    const err = new Error(
+      friendlyApiError(response.status) ||
+        `Gemini API error (${response.status}): ${errText.slice(0, 200)}`
+    );
+    // 400 is included so a model that rejects a setting falls through to the backup model
+    err.retryable = response.status === 400 || response.status === 429 || response.status >= 500;
+    throw err;
+  }
+
+  const data = await response.json();
+  const candidate = data?.candidates?.[0];
+  const text = candidate?.content?.parts?.map((p) => p.text || "").join("") || "";
+  const finishReason = candidate?.finishReason;
+
+  if (!text) {
+    const err = new Error("model returned no text content.");
+    err.retryable = true;
+    throw err;
+  }
+
+  if (finishReason === "MAX_TOKENS") {
+    const err = new Error("response was cut off before finishing (question count too high for one call).");
+    err.retryable = false;
+    throw err;
+  }
+
+  try {
+    return JSON.parse(cleanJson(text));
+  } catch (parseErr) {
+    const err = new Error("could not parse model output as JSON.");
+    err.retryable = true;
+    throw err;
+  }
+}
+
+async function generateForSubject(subjectName, topics, difficulty, count, apiKey) {
+  const prompt = buildSubjectPrompt(subjectName, topics, difficulty, count);
+  // ~350 tokens/question for the answer, plus a cushion for the model's hidden
+  // "thinking" tokens (Gemini 3 Flash cannot fully disable thinking, only minimize it)
+  const maxOutputTokens = Math.min(32768, Math.max(6000, count * 450 + 3500));
+
+  // Try the primary model twice, then the fallback model twice, with short
+  // pauses in between, so a brief Google overload doesn't fail the whole exam.
+  const attempts = [
+    { model: PRIMARY_MODEL, wait: 0 },
+    { model: PRIMARY_MODEL, wait: 1500 },
+    { model: FALLBACK_MODEL, wait: 2000 },
+    { model: FALLBACK_MODEL, wait: 3000 },
+  ];
+
+  let parsed;
+  let lastErr;
+  for (const attempt of attempts) {
+    if (attempt.wait) await sleep(attempt.wait);
+    try {
+      parsed = await callGemini(attempt.model, prompt, apiKey, maxOutputTokens);
+      lastErr = null;
+      break;
+    } catch (err) {
+      lastErr = err;
+      if (!err.retryable) break;
+    }
+  }
+  if (lastErr) {
+    throw new Error(`${subjectName}: ${lastErr.message}`);
+  }
+
+  if (!Array.isArray(parsed) || parsed.length === 0) {
+    throw new Error(`${subjectName}: model returned an empty question set.`);
+  }
+
+  // tag ids uniquely per subject so they never collide once merged
+  return parsed.map((q, i) => ({ ...q, subject: subjectName, id: `${subjectName}_${i}` }));
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method not allowed" });
@@ -63,63 +176,54 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { subject, topic, difficulty, count } = req.body || {};
+  const { subjects, difficulty, questionsPerSubject } = req.body || {};
 
-  if (!subject || !topic || !difficulty) {
-    res.status(400).json({ error: "Missing subject, topic, or difficulty." });
+  if (!Array.isArray(subjects) || subjects.length === 0) {
+    res.status(400).json({ error: "Select at least one subject." });
+    return;
+  }
+  for (const s of subjects) {
+    if (!s || !s.name || !Array.isArray(s.topics) || s.topics.length === 0) {
+      res.status(400).json({ error: `Subject "${s && s.name}" needs at least one topic selected.` });
+      return;
+    }
+  }
+  if (!difficulty) {
+    res.status(400).json({ error: "Missing difficulty." });
     return;
   }
 
-  const safeCount = Math.min(Math.max(Math.round(Number(count) || 1), 1), 15);
-  const prompt = buildPrompt(subject, topic, difficulty, safeCount);
+  // Each subject gets its own dedicated Gemini call, so this can go as high as
+  // real JEE Main sections do (25 per subject) without truncation risk.
+  const safeCount = Math.min(Math.max(Math.round(Number(questionsPerSubject) || 1), 1), 25);
 
   try {
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": process.env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
-          generationConfig: {
-            responseMimeType: "application/json",
-            maxOutputTokens: 8192,
-          },
-        }),
-      }
+    const results = await Promise.allSettled(
+      subjects.map((s) =>
+        generateForSubject(s.name, s.topics, difficulty, safeCount, process.env.GEMINI_API_KEY)
+      )
     );
 
-    if (!response.ok) {
-      const errText = await response.text().catch(() => "");
-      res.status(response.status).json({ error: `Gemini API error (${response.status}): ${errText.slice(0, 300)}` });
+    const questions = [];
+    const errors = [];
+    results.forEach((r, i) => {
+      if (r.status === "fulfilled") {
+        questions.push(...r.value);
+      } else {
+        errors.push(r.reason?.message || `${subjects[i].name}: unknown error`);
+      }
+    });
+
+    if (questions.length === 0) {
+      res.status(502).json({ error: errors.join(" | ") || "All subjects failed to generate." });
       return;
     }
 
-    const data = await response.json();
-    const text = data?.candidates?.[0]?.content?.parts?.map((p) => p.text || "").join("") || "";
-
-    if (!text) {
-      res.status(502).json({ error: "Model returned no text content.", raw: JSON.stringify(data).slice(0, 300) });
-      return;
-    }
-
-    let parsed;
-    try {
-      parsed = JSON.parse(cleanJson(text));
-    } catch (parseErr) {
-      res.status(502).json({ error: "Could not parse model output as JSON.", raw: text.slice(0, 500) });
-      return;
-    }
-
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      res.status(502).json({ error: "Model returned an empty question set." });
-      return;
-    }
-
-    res.status(200).json({ questions: parsed });
+    res.status(200).json({
+      questions,
+      questionsPerSubject: safeCount,
+      partialErrors: errors.length > 0 ? errors : undefined,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message || "Unknown server error." });
   }
