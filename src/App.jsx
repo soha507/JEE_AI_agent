@@ -560,6 +560,34 @@ export default function App() {
         }
         .jee-section { display: flex; flex-direction: column; gap: 18px; }
 
+        .jee-about {
+          margin-top: 56px;
+          padding-top: 28px;
+          border-top: 1px solid var(--border);
+          color: var(--text-soft);
+          font-size: 14px;
+          line-height: 1.7;
+        }
+        .jee-about h2 {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 17px;
+          font-weight: 700;
+          color: var(--text);
+          margin: 28px 0 8px;
+        }
+        .jee-about h2:first-child { margin-top: 0; }
+        .jee-about h3 {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--text);
+          margin: 16px 0 4px;
+        }
+        .jee-about p { margin: 0 0 8px; }
+        .jee-about ol, .jee-about ul { margin: 0 0 8px; padding-left: 22px; }
+        .jee-about li { margin-bottom: 4px; }
+        .jee-about-subject h3 { margin-top: 12px; color: var(--accent-strong); }
+
         .jee-tabs {
           display: flex;
           gap: 6px;
@@ -811,7 +839,7 @@ export default function App() {
           <span>JEE Main · Practice Paper Generator</span>
           <span>Session 2026</span>
         </div>
-        <h1 className="jee-title">Set your <span>own</span> paper</h1>
+        <h1 className="jee-title">JEE AI Agent: set your <span>own</span> paper</h1>
 
         <div className="jee-form">
           <div className="jee-field-block">
@@ -1068,6 +1096,62 @@ export default function App() {
             </button>
           )}
         </div>
+
+        <section className="jee-about" aria-labelledby="about-title">
+          <h2 id="about-title">What is JEE AI Agent?</h2>
+          <p>
+            JEE AI Agent is a free JEE Main practice question generator. Choose Physics,
+            Chemistry or Mathematics, pick the topics you want to revise, set a difficulty,
+            and it writes a fresh practice paper in the style of JEE Main, with both
+            multiple-choice and numerical-answer questions.
+          </p>
+
+          <h2>How it works</h2>
+          <ol>
+            <li>Select one or more subjects, then tick the topics from the JEE Main syllabus.</li>
+            <li>Choose a difficulty and how many questions you want per subject, up to 25.</li>
+            <li>Attempt the paper, switching between subject tabs as you go.</li>
+            <li>Submit to see your score with +4 / -1 marking, the correct answers and a short explanation for every question.</li>
+          </ol>
+
+          <h2>Features</h2>
+          <ul>
+            <li>Full-length mock papers: up to 25 questions in each of Physics, Chemistry and Mathematics (75 in total).</li>
+            <li>Single-correct MCQs and numerical-answer questions, tagged Easy, Medium or Hard.</li>
+            <li>Answers and explanations stay hidden until you submit the test.</li>
+            <li>Download the question paper with its answer key as a PDF.</li>
+            <li>Free to use, with no sign-up.</li>
+          </ul>
+
+          <h2>JEE Main topics you can practise</h2>
+          {SUBJECTS.map((subj) => (
+            <div key={subj} className="jee-about-subject">
+              <h3>{subj}</h3>
+              <p>{SUBJECT_TOPICS[subj].join(" \u00b7 ")}</p>
+            </div>
+          ))}
+
+          <h2>Frequently asked questions</h2>
+          <h3>Is JEE AI Agent free?</h3>
+          <p>Yes. You can generate and attempt practice papers without paying or creating an account.</p>
+          <h3>Are these the real previous year JEE Main questions?</h3>
+          <p>
+            No. The questions are written by an AI model to follow the style and difficulty of
+            past JEE Main papers, so they are new questions and not copies of real ones.
+          </p>
+          <h3>Can the answers be wrong?</h3>
+          <p>
+            Occasionally. AI-written questions can contain mistakes, so cross-check anything
+            that looks doubtful with your textbook or teacher before relying on it.
+          </p>
+          <h3>How many questions can I generate?</h3>
+          <p>
+            Up to 25 per subject. Selecting all three subjects at 25 each gives a 75-question
+            paper, the same size as a JEE Main paper.
+          </p>
+          <h3>Can I save the paper?</h3>
+          <p>Yes. Use the Download Question Paper button to get a PDF with the answer key on the last pages.</p>
+        </section>
       </div>
     </div>
   );
