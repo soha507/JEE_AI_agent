@@ -200,7 +200,14 @@ export default async function handler(req, res) {
   try {
     const results = await Promise.allSettled(
       subjects.map((s) =>
-        generateForSubject(s.name, s.topics, difficulty, safeCount, process.env.GEMINI_API_KEY)
+        generateForSubject(
+          s.name,
+          s.topics,
+          difficulty,
+          // a subject may ask for its own count (used when part of the paper comes from previous year questions)
+          Math.min(Math.max(Math.round(Number(s.count) || safeCount), 1), 25),
+          process.env.GEMINI_API_KEY
+        )
       )
     );
 
