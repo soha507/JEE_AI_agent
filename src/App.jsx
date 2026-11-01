@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { jsPDF } from "jspdf";
 
 const SUBJECT_TOPICS = {
@@ -30,7 +30,8 @@ const SUBJECT_TOPICS = {
     "Chemical Bonding and Molecular Structure",
     "Chemical Thermodynamics",
     "Solutions",
-    "Equilibrium",
+    "Chemical Equilibrium",
+    "Ionic Equilibrium",
     "Redox Reactions and Electrochemistry",
     "Chemical Kinetics",
     "Surface Chemistry",
@@ -53,7 +54,8 @@ const SUBJECT_TOPICS = {
   ],
   Mathematics: [
     "Sets, Relations and Functions",
-    "Complex Numbers and Quadratic Equations",
+    "Complex Numbers", 
+    "Quadratic Equations",
     "Matrices and Determinants",
     "Permutations and Combinations",
     "Binomial Theorem",
@@ -61,7 +63,8 @@ const SUBJECT_TOPICS = {
     "Limit, Continuity and Differentiability",
     "Integral Calculus",
     "Differential Equations",
-    "Straight Lines and Circles",
+    "Straight Lines",
+    "Circles",
     "Conic Sections",
     "Three Dimensional Geometry",
     "Vector Algebra",
@@ -73,6 +76,54 @@ const SUBJECT_TOPICS = {
 
 const SUBJECTS = Object.keys(SUBJECT_TOPICS);
 const DIFFICULTIES = ["Easy", "Medium", "Hard", "Mixed"];
+
+const SOURCES = [
+  { id: "ai", label: "AI-generated" },
+  { id: "mix", label: "PYQ + AI mix" },
+  { id: "pyq", label: "Previous year only" },
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Keeps only well-formed previous year questions, so one bad entry in the
+// bank file can never break a paper.
+function cleanBank(raw) {
+  const arr = Array.isArray(raw) ? raw : raw && Array.isArray(raw.questions) ? raw.questions : [];
+  const seen = new Set();
+  const out = [];
+  arr.forEach((q, i) => {
+    if (!q || typeof q !== "object") return;
+    if (!SUBJECTS.includes(q.subject)) return;
+    if (!SUBJECT_TOPICS[q.subject].includes(q.topic)) return;
+    if (typeof q.question !== "string" || !q.question.trim()) return;
+    if (q.type === "mcq") {
+      if (!Array.isArray(q.options) || q.options.length < 2) return;
+      if (!Number.isInteger(q.correctIndex) || q.correctIndex < 0 || q.correctIndex >= q.options.length) return;
+    } else if (q.type === "numerical") {
+      if (q.correctValue === undefined || q.correctValue === null || String(q.correctValue).trim() === "") return;
+    } else {
+      return;
+    }
+    const id = String(q.id ?? `row${i}`);
+    if (seen.has(id)) return;
+    seen.add(id);
+    out.push({ ...q, id });
+  });
+  return out;
+}
+
+function sourceLabel(src) {
+  if (!src) return "";
+  if (typeof src === "string") return src;
+  return [src.exam, src.year, src.session].filter(Boolean).join(" ");
+}
 
 export default function App() {
   const [selectedSubjects, setSelectedSubjects] = useState(["Physics"]);
@@ -87,8 +138,31 @@ export default function App() {
   const [numericInput, setNumericInput] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
+  const [source, setSource] = useState("ai");
+  const [pyqBank, setPyqBank] = useState([]);
+  const [notice, setNotice] = useState(null);
   const resultsRef = useRef(null);
   const tabsRef = useRef(null);
+
+  // Load the previous year question bank once. If the file is missing or
+  // unreadable the app simply behaves as AI-only.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/pyq-bank.json", { cache: "no-cache" });
+        if (!res.ok) return;
+        if (!(res.headers.get("content-type") || "").includes("json")) return;
+        const bank = cleanBank(await res.json());
+        if (!cancelled) setPyqBank(bank);
+      } catch (_) {
+        /* no bank available */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function toggleSubject(subj) {
     setSelectedSubjects((prev) => {
@@ -147,49 +221,100 @@ export default function App() {
 
     setLoading(true);
     setError(null);
+    setNotice(null);
     setQuestions([]);
     setSelected({});
     setNumericInput({});
     setSubmitted(false);
 
     try {
-      const payload = {
-        subjects: selectedSubjects.map((s) => ({ name: s, topics: selectedTopics[s] })),
-        difficulty,
-        questionsPerSubject,
-      };
+      const count = Math.min(Math.max(Math.round(Number(questionsPerSubject) || 1), 1), 25);
+      const notes = [];
+      let partialMsg = null;
 
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || data.error) {
-        throw new Error(data.error || `Request failed (${response.status})`);
+      // 1) Previous year questions from the bank (not used for "AI-generated")
+      const pyqBySubject = {};
+      const aiNeed = {};
+      const aiRequests = [];
+      for (const subj of selectedSubjects) {
+        let picked = [];
+        if (source !== "ai") {
+          const topicSet = new Set(selectedTopics[subj]);
+          const pool = shuffle(
+            pyqBank.filter(
+              (q) =>
+                q.subject === subj &&
+                topicSet.has(q.topic) &&
+                (difficulty === "Mixed" || !q.difficultyTag || q.difficultyTag === difficulty)
+            )
+          );
+          const want = source === "pyq" ? count : Math.ceil(count / 2);
+          picked = pool.slice(0, want);
+          if (source === "pyq" && picked.length < count) {
+            notes.push(
+              `${subj}: only ${picked.length} previous year question${picked.length === 1 ? "" : "s"} available for the selected topics (you asked for ${count}).`
+            );
+          }
+          if (source === "mix" && picked.length < want) {
+            notes.push(`${subj}: few previous year questions are available for these topics yet, so more of them are AI-written.`);
+          }
+        }
+        pyqBySubject[subj] = picked;
+        aiNeed[subj] = source === "pyq" ? 0 : count - picked.length;
+        if (aiNeed[subj] > 0) {
+          aiRequests.push({ name: subj, topics: selectedTopics[subj], count: aiNeed[subj] });
+        }
+      }
+      const pyqTotal = Object.values(pyqBySubject).reduce((n, a) => n + a.length, 0);
+      if (source === "pyq" && pyqTotal === 0) {
+        throw new Error(
+          "No previous year questions are available yet for the selected topics. Choose \u201cPYQ + AI mix\u201d or \u201cAI-generated\u201d instead."
+        );
       }
 
-      if (!Array.isArray(data.questions) || data.questions.length === 0) {
-        throw new Error("No questions returned.");
+      // 2) AI-written questions for whatever is still needed
+      let aiQuestions = [];
+      if (aiRequests.length > 0) {
+        try {
+          const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ subjects: aiRequests, difficulty, questionsPerSubject: count }),
+          });
+          const data = await response.json();
+          if (!response.ok || data.error) {
+            throw new Error(data.error || `Request failed (${response.status})`);
+          }
+          if (!Array.isArray(data.questions) || data.questions.length === 0) {
+            throw new Error("No questions returned.");
+          }
+          aiQuestions = data.questions;
+          if (Array.isArray(data.partialErrors) && data.partialErrors.length > 0) {
+            partialMsg = `Some sections had trouble generating: ${data.partialErrors.join(" | ")}`;
+          }
+        } catch (aiErr) {
+          if (pyqTotal === 0) throw aiErr;
+          partialMsg = `AI questions could not be generated (${aiErr.message}), so this paper only has previous year questions.`;
+        }
       }
 
-      // Ensure unique ids/subject fields even if the model slipped up
-      const seen = new Set();
-      const safeQuestions = data.questions.map((q, i) => {
-        const subj = q.subject && SUBJECTS.includes(q.subject) ? q.subject : selectedSubjects[0];
-        let id = q.id || `${subj}_${i}`;
-        while (seen.has(id)) id = `${id}_${i}`;
-        seen.add(id);
-        return { ...q, id, subject: subj };
-      });
+      // 3) Combine per subject, with unique ids and an origin tag
+      const combined = [];
+      for (const subj of selectedSubjects) {
+        const fromBank = pyqBySubject[subj].map((q) => ({ ...q, id: `pyq_${q.id}`, origin: "pyq", subject: subj }));
+        const fromAi = aiQuestions
+          .filter((q) => q.subject === subj)
+          .slice(0, aiNeed[subj])
+          .map((q, i) => ({ ...q, id: `${subj}_ai_${i}`, origin: "ai", subject: subj }));
+        combined.push(...shuffle([...fromBank, ...fromAi]));
+      }
+      if (combined.length === 0) throw new Error("No questions returned.");
 
+      const safeQuestions = combined;
       setQuestions(safeQuestions);
       setActiveTab(safeQuestions[0]?.subject ?? null);
-      if (Array.isArray(data.partialErrors) && data.partialErrors.length > 0) {
-        setError(`Some sections had trouble generating: ${data.partialErrors.join(" | ")}`);
-      }
+      setNotice(notes.length > 0 ? notes.join(" ") : null);
+      if (partialMsg) setError(partialMsg);
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 80);
@@ -210,6 +335,20 @@ export default function App() {
   function selectMcq(qid, idx) {
     if (submitted) return;
     setSelected((s) => ({ ...s, [qid]: idx }));
+  }
+
+  function clearAnswer(qid) {
+    if (submitted) return;
+    setSelected((s) => {
+      const copy = { ...s };
+      delete copy[qid];
+      return copy;
+    });
+    setNumericInput((n) => {
+      const copy = { ...n };
+      delete copy[qid];
+      return copy;
+    });
   }
 
   function isCorrect(q) {
@@ -238,6 +377,10 @@ export default function App() {
   }
 
   const attemptedCount = questions.filter(isAttempted).length;
+  const hasPyq = questions.some((q) => q.origin === "pyq");
+  const availablePyq = pyqBank.filter(
+    (q) => selectedSubjects.includes(q.subject) && (selectedTopics[q.subject] || []).includes(q.topic)
+  ).length;
 
   const correctCount = submitted ? questions.filter((q) => isCorrect(q)).length : 0;
   const totalMarks = submitted
@@ -302,7 +445,8 @@ export default function App() {
       }
       sec.items.forEach((q) => {
         qNum += 1;
-        writeText(`Q${qNum}. [${q.difficultyTag || "Medium"}]`, { fontSize: 11, bold: true, spaceAfter: 2 });
+        const pyqNote = q.origin === "pyq" ? `  [PYQ ${sourceLabel(q.source)}]`.replace(/\s+\]/, "]") : "";
+        writeText(`Q${qNum}. [${q.difficultyTag || "Medium"}]${pyqNote}`, { fontSize: 11, bold: true, spaceAfter: 2 });
         writeText(q.question, { fontSize: 11, spaceAfter: 4 });
         if (q.type === "mcq" && Array.isArray(q.options)) {
           q.options.forEach((opt, idx) => {
@@ -688,6 +832,34 @@ export default function App() {
         .jee-tag-easy { background: var(--green-bg); color: var(--green); }
         .jee-tag-medium { background: var(--amber-bg); color: var(--amber); }
         .jee-tag-hard { background: var(--danger-bg); color: var(--danger); }
+        .jee-tag-pyq { background: var(--accent-bg); color: var(--accent-strong); text-transform: none; letter-spacing: 0.02em; }
+        .jee-tag-ai { background: rgba(255,255,255,0.06); color: var(--text-soft); }
+
+        .jee-source-hint { margin: 8px 0 0; font-size: 12.5px; color: var(--text-faint); line-height: 1.5; }
+        .jee-notice {
+          font-size: 12.5px;
+          color: var(--text-soft);
+          line-height: 1.5;
+          background: var(--accent-bg);
+          border: 1px solid rgba(108, 142, 255, 0.25);
+          border-radius: 7px;
+          padding: 8px 10px;
+          margin-top: 12px;
+        }
+        .jee-card-foot { display: flex; justify-content: flex-start; margin-top: 6px; }
+        .jee-clear-btn {
+          font-family: 'IBM Plex Mono', monospace;
+          font-size: 11.5px;
+          color: var(--text-soft);
+          background: transparent;
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 5px 12px;
+          cursor: pointer;
+          transition: color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+        }
+        .jee-clear-btn:hover:not(:disabled) { color: var(--danger); border-color: var(--danger); }
+        .jee-clear-btn:disabled { opacity: 0.35; cursor: default; }
         .jee-marks { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-faint); }
 
         .jee-question-text { font-size: 15.5px; line-height: 1.6; margin: 4px 0 16px; color: var(--text); }
@@ -898,6 +1070,33 @@ export default function App() {
             );
           })}
 
+          <div className="jee-field-block">
+            <label>Question source</label>
+            <div className="jee-subject-chips">
+              {SOURCES.map((o) => (
+                <button
+                  type="button"
+                  key={o.id}
+                  className={"jee-chip" + (source === o.id ? " active" : "")}
+                  onClick={() => setSource(o.id)}
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+            <p className="jee-source-hint">
+              {source === "ai" && "Fresh questions written by AI in the style of JEE Main."}
+              {source === "mix" &&
+                (pyqBank.length === 0
+                  ? "No previous year questions are loaded yet, so this will use AI-written questions."
+                  : `About half from real previous year papers (${availablePyq} available for your topics), the rest written by AI.`)}
+              {source === "pyq" &&
+                (pyqBank.length === 0
+                  ? "No previous year questions are loaded yet. Pick another option for now."
+                  : `Only real previous year questions, labelled with exam, year and shift (${availablePyq} available for your topics).`)}
+            </p>
+          </div>
+
           <div className="jee-row">
             <div className="jee-field">
               <label>Difficulty</label>
@@ -929,6 +1128,7 @@ export default function App() {
             </button>
           </div>
           {error && <div className="jee-error">{error}</div>}
+          {notice && <div className="jee-notice">{notice}</div>}
         </div>
 
         <div ref={resultsRef} className="jee-results">
@@ -1010,6 +1210,12 @@ export default function App() {
                       <div className="jee-card-head">
                         <span className="jee-qnum">Q{qNum}</span>
                         <span className={`jee-tag ${tagClass}`}>{q.difficultyTag || "Medium"}</span>
+                        {q.origin === "pyq" && (
+                          <span className="jee-tag jee-tag-pyq">
+                            PYQ{sourceLabel(q.source) ? ` \u00b7 ${sourceLabel(q.source)}` : ""}
+                          </span>
+                        )}
+                        {hasPyq && q.origin !== "pyq" && <span className="jee-tag jee-tag-ai">AI</span>}
                         {submitted && (
                           <span className={`jee-result-tag ${correct ? "jee-result-correct" : "jee-result-wrong"}`}>
                             {correct ? "Correct" : "Incorrect"}
@@ -1055,6 +1261,19 @@ export default function App() {
                             onChange={(e) => setNumericInput((n) => ({ ...n, [q.id]: e.target.value }))}
                             placeholder="—"
                           />
+                        </div>
+                      )}
+
+                      {!submitted && (
+                        <div className="jee-card-foot">
+                          <button
+                            type="button"
+                            className="jee-clear-btn"
+                            disabled={!isAttempted(q)}
+                            onClick={() => clearAnswer(q.id)}
+                          >
+                            Reset answer
+                          </button>
                         </div>
                       )}
 
