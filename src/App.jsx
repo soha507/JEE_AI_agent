@@ -75,6 +75,9 @@ const SUBJECT_TOPICS = {
 };
 
 const SUBJECTS = Object.keys(SUBJECT_TOPICS);
+// must match slug() in scripts/build-chapter-pages.mjs
+const slugify = (x) => x.toLowerCase().replace(/\(.*?\)/g, "").replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const chapterSlug = (subj, t) => `${slugify(subj)}-${slugify(t)}`;
 const DIFFICULTIES = ["Easy", "Medium", "Hard", "Mixed"];
 
 const SOURCES = [
@@ -125,10 +128,24 @@ function sourceLabel(src) {
   return [src.exam, src.year, src.session].filter(Boolean).join(" ");
 }
 
+// Chapter pages link here as /?subject=Physics&topic=Kinematics to preselect a chapter.
+function readDeepLink() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const subject = p.get("subject");
+    const topic = p.get("topic");
+    if (SUBJECT_TOPICS[subject] && SUBJECT_TOPICS[subject].includes(topic)) return { subject, topic };
+  } catch (_) {}
+  return null;
+}
+
 export default function App() {
-  const [selectedSubjects, setSelectedSubjects] = useState(["Physics"]);
-  const [selectedTopics, setSelectedTopics] = useState({ Physics: [...SUBJECT_TOPICS.Physics] });
-  const [openTopicPanel, setOpenTopicPanel] = useState("Physics");
+  const [deepLink] = useState(readDeepLink);
+  const [selectedSubjects, setSelectedSubjects] = useState(deepLink ? [deepLink.subject] : ["Physics"]);
+  const [selectedTopics, setSelectedTopics] = useState(
+    deepLink ? { [deepLink.subject]: [deepLink.topic] } : { Physics: [...SUBJECT_TOPICS.Physics] }
+  );
+  const [openTopicPanel, setOpenTopicPanel] = useState(deepLink ? deepLink.subject : "Physics");
   const [difficulty, setDifficulty] = useState("Mixed");
   const [questionsPerSubject, setQuestionsPerSubject] = useState(5);
   const [loading, setLoading] = useState(false);
@@ -1370,6 +1387,15 @@ export default function App() {
           </p>
           <h3>Can I save the paper?</h3>
           <p>Yes. Use the Download Question Paper button to get a PDF with the answer key on the last pages.</p>
+          <h3>Browse chapter-wise practice questions</h3>
+          <p>
+            <a href="/jee-main/">See all JEE Main chapters</a>, or jump to one:{" "}
+            {SUBJECTS.flatMap((subj) => SUBJECT_TOPICS[subj].map((t) => (
+              <span key={subj + t}>
+                <a href={`/jee-main/${chapterSlug(subj, t)}/`}>{t}</a>{" · "}
+              </span>
+            )))}
+          </p>
         </section>
       </div>
     </div>
