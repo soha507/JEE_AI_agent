@@ -1,0 +1,850 @@
+[
+ {
+  "subject": "Chemistry",
+  "topic": "Some Basic Concepts in Chemistry (Mole Concept)",
+  "intro": "This chapter covers the mole concept, molar mass, stoichiometry, limiting reagent, concentration terms and empirical and molecular formulae. JEE Main tests it through quick numerical problems on mass-mole-volume conversions, solution concentrations and reaction stoichiometry, often embedded in other physical chemistry chapters.",
+  "keyPoints": [
+   "1 mole = 6.022 x 10^23 particles (Avogadro number)",
+   "Moles = given mass / molar mass = volume at STP / 22.4 L",
+   "Molarity = moles of solute / volume of solution in L",
+   "Molality = moles of solute / mass of solvent in kg",
+   "Limiting reagent decides the maximum product formed"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "How many moles of CO2 are present in 4.4 g of CO2? (C = 12, O = 16)",
+    "options": [
+     "0.01",
+     "0.1",
+     "1",
+     "0.25"
+    ],
+    "correctIndex": 1,
+    "explanation": "Molar mass of CO2 = 44 g/mol, so moles = 4.4/44 = 0.1."
+   },
+   {
+    "type": "numerical",
+    "question": "What mass of NaOH (in g) is required to prepare 500 mL of 0.2 M NaOH solution? (Na = 23, O = 16, H = 1)",
+    "answer": "4",
+    "explanation": "Moles = 0.2 x 0.5 = 0.1 mol; mass = 0.1 x 40 = 4 g.",
+    "verify": "0.2*0.5*40"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Atomic Structure",
+  "intro": "This chapter deals with the structure of the atom, Bohr model, quantum numbers, orbitals, electronic configuration and the rules for filling electrons. JEE Main asks about radial and angular nodes, quantum number sets, hydrogen-like spectra and Bohr-model calculations of radius and energy.",
+  "keyPoints": [
+   "Radius of nth Bohr orbit = 52.9 pm x n^2 / Z",
+   "Energy of nth level = -13.6 x Z^2 / n^2 eV",
+   "Radial nodes = n - l - 1; angular nodes = l",
+   "Aufbau, Pauli exclusion and Hund's rules govern filling",
+   "1/lambda = R x Z^2 (1/n1^2 - 1/n2^2)"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "The number of radial nodes in a 3p orbital is:",
+    "options": [
+     "0",
+     "2",
+     "1",
+     "3"
+    ],
+    "correctIndex": 2,
+    "explanation": "Radial nodes = n - l - 1 = 3 - 1 - 1 = 1."
+   },
+   {
+    "type": "numerical",
+    "question": "Using a0 = 52.9 pm, find the radius (in pm, nearest integer) of the 3rd Bohr orbit of He+ (Z = 2).",
+    "answer": "238",
+    "explanation": "r = 52.9 x n^2/Z = 52.9 x 9/2 = 238.05, which rounds to 238 pm.",
+    "verify": "Math.round(52.9*9/2)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Chemical Bonding and Molecular Structure",
+  "intro": "This chapter covers ionic and covalent bonding, VSEPR theory, hybridisation, molecular orbital theory, bond order and magnetic behaviour, and intermolecular forces. JEE Main commonly asks for shapes, hybridisation, bond order, paramagnetism and counting of sigma and pi bonds or lone pairs.",
+  "keyPoints": [
+   "Bond order = (Nb - Na)/2 from molecular orbital theory",
+   "Hybridisation: sp (linear), sp2 (trigonal planar), sp3 (tetrahedral)",
+   "VSEPR: lone pair-lone pair repulsion is greater than lone pair-bond pair",
+   "Species with unpaired electrons are paramagnetic",
+   "A single bond is one sigma bond; a double bond is one sigma + one pi bond"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following species is paramagnetic?",
+    "options": [
+     "N2",
+     "F2",
+     "CO",
+     "O2"
+    ],
+    "correctIndex": 3,
+    "explanation": "O2 has two unpaired electrons in its pi* orbitals, while N2, F2 and CO have all electrons paired."
+   },
+   {
+    "type": "numerical",
+    "question": "Find the total number of sigma bonds in one molecule of propene, CH3-CH=CH2.",
+    "answer": "8",
+    "explanation": "Propene has 6 C-H sigma bonds and 2 C-C sigma bonds (one of them part of the double bond), giving 8."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Chemical Thermodynamics",
+  "intro": "This chapter explains the first law, enthalpy, entropy, Gibbs energy and spontaneity of processes, along with Hess's law and bond enthalpies. JEE Main tests it using calculations of work, internal energy, enthalpy change and Gibbs energy, and conceptual questions on spontaneity.",
+  "keyPoints": [
+   "First law: delta U = q + w",
+   "delta H = delta U + (delta ng)RT",
+   "Gibbs energy: delta G = delta H - T delta S",
+   "Process is spontaneous when delta G < 0",
+   "Hess's law: enthalpy change depends only on initial and final states"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "A reaction has negative delta H and positive delta S. It will be:",
+    "options": [
+     "spontaneous at all temperatures",
+     "spontaneous only at low temperature",
+     "spontaneous only at high temperature",
+     "non-spontaneous at all temperatures"
+    ],
+    "correctIndex": 0,
+    "explanation": "Since delta G = delta H - T delta S, a negative delta H and positive delta S make delta G negative at every temperature."
+   },
+   {
+    "type": "numerical",
+    "question": "For a reaction delta H = -92 kJ/mol and delta S = -200 J/(K mol). Find delta G (in kJ/mol) at 500 K.",
+    "answer": "8",
+    "explanation": "delta G = -92 - 500 x (-0.200) = -92 + 100 = +8 kJ/mol.",
+    "verify": "-92-500*(-0.2)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Solutions",
+  "intro": "This chapter covers concentration terms, vapour pressure, Raoult's law, colligative properties, the van't Hoff factor and abnormal molar masses. JEE Main asks numerical problems on elevation of boiling point, depression of freezing point and osmotic pressure, and conceptual comparison of colligative effects.",
+  "keyPoints": [
+   "Raoult's law: p = x(solvent) x p0 for an ideal solution",
+   "delta Tb = i Kb m; delta Tf = i Kf m",
+   "Osmotic pressure = i C R T",
+   "Colligative properties depend on number of solute particles",
+   "Relative lowering of vapour pressure = mole fraction of solute"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Assuming complete dissociation, which 0.1 m aqueous solution has the highest boiling point?",
+    "options": [
+     "Glucose",
+     "NaCl",
+     "CaCl2",
+     "Urea"
+    ],
+    "correctIndex": 2,
+    "explanation": "CaCl2 gives 3 particles per formula unit, the most among the options, so it gives the greatest elevation."
+   },
+   {
+    "type": "numerical",
+    "question": "36 g of glucose (molar mass 180 g/mol) is dissolved in 500 g of water. Find the elevation in boiling point in K. (Kb = 0.52 K kg/mol)",
+    "answer": "0.208",
+    "explanation": "Molality = (36/180)/0.5 = 0.4 m; delta Tb = 0.52 x 0.4 = 0.208 K.",
+    "verify": "0.52*(36/180)/0.5"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Chemical Equilibrium",
+  "intro": "This chapter covers the dynamic nature of equilibrium, equilibrium constants Kc and Kp, reaction quotient and Le Chatelier's principle. JEE Main tests it with Kc and Kp calculations, relations between them, and predicting the direction of shift when conditions change.",
+  "keyPoints": [
+   "Kc = [products]/[reactants], each raised to its stoichiometric coefficient",
+   "Kp = Kc (RT)^(delta ng)",
+   "Q < K means the reaction goes forward; Q > K means it goes backward",
+   "Catalyst does not change the value of K",
+   "Le Chatelier: system opposes the applied change"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "For which reaction is Kp equal to Kc?",
+    "options": [
+     "N2(g) + 3H2(g) <-> 2NH3(g)",
+     "H2(g) + I2(g) <-> 2HI(g)",
+     "PCl5(g) <-> PCl3(g) + Cl2(g)",
+     "2SO2(g) + O2(g) <-> 2SO3(g)"
+    ],
+    "correctIndex": 1,
+    "explanation": "Kp = Kc(RT)^(delta ng) and delta ng = 0 only for H2 + I2 <-> 2HI."
+   },
+   {
+    "type": "numerical",
+    "question": "For H2 + I2 <-> 2HI, the equilibrium concentrations are [H2] = 0.15 M, [I2] = 0.15 M and [HI] = 0.60 M. Find Kc.",
+    "answer": "16",
+    "explanation": "Kc = (0.60)^2/(0.15 x 0.15) = 0.36/0.0225 = 16.",
+    "verify": "0.6*0.6/(0.15*0.15)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Ionic Equilibrium",
+  "intro": "This chapter covers acids and bases, pH, weak electrolytes, Ka and Kb, buffers, hydrolysis of salts and solubility product. JEE Main asks for pH calculations of strong and weak electrolytes, buffer pH, common-ion effect and Ksp-based solubility problems.",
+  "keyPoints": [
+   "pH = -log[H+]; pH + pOH = 14 at 25 degree C",
+   "Weak acid: [H+] = sqrt(Ka x C)",
+   "Buffer: pH = pKa + log([salt]/[acid])",
+   "Ksp = product of ion concentrations at saturation",
+   "Common ion lowers the solubility of a sparingly soluble salt"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "What is the pH of a 0.005 M aqueous solution of Ba(OH)2 at 25 degree C (assume complete dissociation)?",
+    "options": [
+     "2",
+     "10",
+     "13",
+     "12"
+    ],
+    "correctIndex": 3,
+    "explanation": "[OH-] = 2 x 0.005 = 0.01 M, so pOH = 2 and pH = 12."
+   },
+   {
+    "type": "numerical",
+    "question": "Find the pH of 0.1 M weak monobasic acid with Ka = 1 x 10^-5 (use [H+] = sqrt(Ka C)).",
+    "answer": "3",
+    "explanation": "[H+] = sqrt(10^-5 x 0.1) = 10^-3 M, so pH = 3.",
+    "verify": "-Math.log10(Math.sqrt(1e-5*0.1))"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Redox Reactions and Electrochemistry",
+  "intro": "This chapter covers oxidation numbers, balancing redox equations, electrochemical cells, electrode potentials, the Nernst equation and Faraday's laws of electrolysis. JEE Main tests oxidation-state determination, cell EMF, and electrolysis calculations of mass deposited, usually needing a few quick steps.",
+  "keyPoints": [
+   "E0cell = E0(cathode) - E0(anode)",
+   "Nernst: E = E0 - (0.059/n) log Q at 298 K",
+   "delta G0 = -nFE0",
+   "Faraday's first law: m = (M x I x t)/(n x F)",
+   "F = 96500 C/mol"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "The oxidation state of chromium in K2Cr2O7 is:",
+    "options": [
+     "+6",
+     "+3",
+     "+7",
+     "+12"
+    ],
+    "correctIndex": 0,
+    "explanation": "Two K give +2 and seven O give -14, so 2x + 2 - 14 = 0 and x = +6."
+   },
+   {
+    "type": "numerical",
+    "question": "A current of 2 A is passed for 965 s through CuSO4 solution. Find the mass of copper deposited in g. (Cu = 64, F = 96500 C/mol)",
+    "answer": "0.64",
+    "explanation": "Charge = 1930 C = 0.02 mol electrons; Cu2+ needs 2 e-, so 0.01 mol x 64 = 0.64 g.",
+    "verify": "2*965/96500/2*64"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Chemical Kinetics",
+  "intro": "This chapter covers rate of reaction, rate law, order and molecularity, integrated rate equations, half-life, Arrhenius equation and collision theory. JEE Main asks numerical questions on first-order kinetics, half-life, activation energy and graphs of concentration against time.",
+  "keyPoints": [
+   "Rate = k [A]^m [B]^n",
+   "First order: k = (2.303/t) log (A0/A)",
+   "First order half-life = 0.693/k (independent of concentration)",
+   "Arrhenius: k = A e^(-Ea/RT)",
+   "Zero order: [A] = [A]0 - kt"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "The half-life of a first-order reaction:",
+    "options": [
+     "is directly proportional to initial concentration",
+     "is independent of initial concentration",
+     "is inversely proportional to initial concentration",
+     "is proportional to the square of initial concentration"
+    ],
+    "correctIndex": 1,
+    "explanation": "For first order, t1/2 = 0.693/k, which does not contain concentration."
+   },
+   {
+    "type": "numerical",
+    "question": "A first-order reaction has a half-life of 20 min. How many minutes are needed for 87.5% of the reactant to be consumed?",
+    "answer": "60",
+    "explanation": "87.5% completion leaves 1/8 of reactant, which is 3 half-lives: 3 x 20 = 60 min.",
+    "verify": "20*Math.log2(1/0.125)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Surface Chemistry",
+  "intro": "This chapter covers adsorption, physisorption and chemisorption, adsorption isotherms, catalysis, colloids, their classification, preparation and properties, and emulsions. JEE Main mostly asks conceptual and classification questions, such as lyophilic versus lyophobic sols, Tyndall effect, coagulation and Freundlich isotherm.",
+  "keyPoints": [
+   "Freundlich isotherm: x/m = k P^(1/n)",
+   "Physisorption: weak van der Waals forces, multilayer, reversible",
+   "Chemisorption: chemical bonds, monolayer, high enthalpy of adsorption",
+   "Tyndall effect arises from scattering of light by colloidal particles",
+   "Hardy-Schulze rule: higher charge on coagulating ion means greater coagulating power"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "According to the Freundlich isotherm, at sufficiently high pressure the extent of adsorption per unit mass becomes:",
+    "options": [
+     "directly proportional to pressure",
+     "proportional to the square root of pressure",
+     "independent of pressure",
+     "inversely proportional to pressure"
+    ],
+    "correctIndex": 2,
+    "explanation": "At high pressure 1/n tends to 0, so x/m = k P^0 = constant and independent of pressure."
+   },
+   {
+    "type": "numerical",
+    "question": "How many of the following are lyophobic sols: gold sol, starch, gelatin, As2S3 sol, Fe(OH)3 sol, gum?",
+    "answer": "3",
+    "explanation": "Metal sols and metal sulphide or hydroxide sols (gold, As2S3, Fe(OH)3) are lyophobic; starch, gelatin and gum are lyophilic."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Classification of Elements and Periodicity",
+  "intro": "This chapter covers the modern periodic law, periodic table layout, s, p, d and f blocks and trends in atomic radius, ionisation enthalpy, electron gain enthalpy and electronegativity. JEE Main asks for comparisons of sizes, ionisation enthalpies and oxidation tendencies among elements and isoelectronic species.",
+  "keyPoints": [
+   "Atomic radius decreases across a period and increases down a group",
+   "Ionisation enthalpy generally increases across a period",
+   "Isoelectronic ions: size decreases as nuclear charge increases",
+   "Electronegativity increases across a period and decreases down a group",
+   "Metallic character decreases across a period"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Among O2-, F-, Na+ and Mg2+, the species with the largest ionic radius is:",
+    "options": [
+     "O2-",
+     "F-",
+     "Na+",
+     "Mg2+"
+    ],
+    "correctIndex": 0,
+    "explanation": "All are isoelectronic with 10 electrons; O2- has the lowest nuclear charge (+8), so it is the largest."
+   },
+   {
+    "type": "numerical",
+    "question": "Among N, O, F, Ne, Na and Mg, how many have first ionisation enthalpy higher than that of Mg?",
+    "answer": "4",
+    "explanation": "N, O, F and Ne (period 2 elements) have higher first ionisation enthalpy than Mg, whereas Na has a lower value."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "General Principles of Metallurgy",
+  "intro": "This chapter covers occurrence of metals, concentration of ores, roasting, calcination, reduction methods, thermodynamic basis through Ellingham diagrams and refining. JEE Main asks about ore types, suitable concentration and extraction methods, and purpose of reagents in extraction of aluminium, iron, copper and zinc.",
+  "keyPoints": [
+   "Froth flotation concentrates sulphide ores",
+   "Roasting converts sulphides to oxides in excess air; calcination heats carbonates in limited air",
+   "Ellingham diagram: delta G0 against T for oxide formation",
+   "Aluminium: electrolysis of Al2O3 in molten cryolite",
+   "Electrolytic refining and zone refining give high-purity metals"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Froth flotation is mainly used for the concentration of:",
+    "options": [
+     "Haematite (Fe2O3)",
+     "Bauxite (Al2O3.2H2O)",
+     "Magnetite (Fe3O4)",
+     "Zinc blende (ZnS)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Sulphide ores are wetted by pine oil and float in froth, while oxide ores are not."
+   },
+   {
+    "type": "numerical",
+    "question": "Find the mass of aluminium (in g) obtainable from 204 g of pure Al2O3 by complete electrolytic reduction. (Al = 27, O = 16)",
+    "answer": "108",
+    "explanation": "Molar mass of Al2O3 = 102, so 204 g is 2 mol and contains 4 mol Al = 4 x 27 = 108 g.",
+    "verify": "204/(2*27+3*16)*2*27"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Hydrogen",
+  "intro": "This chapter covers the position of hydrogen, its isotopes, preparation and properties, hydrides, water, heavy water and hydrogen peroxide. JEE Main asks conceptual questions on types of hydrides, hardness of water, structure and uses of H2O2 and D2O.",
+  "keyPoints": [
+   "Isotopes: protium, deuterium and tritium",
+   "Hydrides: ionic (saline), covalent (molecular) and metallic (interstitial)",
+   "Temporary hardness is due to Ca and Mg bicarbonates; boiling removes it",
+   "Permanent hardness is due to chlorides and sulphates of Ca and Mg",
+   "H2O2 acts as both an oxidising and a reducing agent"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Temporary hardness of water is caused by the presence of:",
+    "options": [
+     "CaCl2 and MgCl2",
+     "CaSO4 and MgSO4",
+     "Ca(HCO3)2 and Mg(HCO3)2",
+     "NaCl and KCl"
+    ],
+    "correctIndex": 2,
+    "explanation": "Bicarbonates of calcium and magnesium cause temporary hardness and are removed on boiling."
+   },
+   {
+    "type": "numerical",
+    "question": "Find the number of neutrons in one molecule of heavy water, D2O. (D = 2H, O = 16O)",
+    "answer": "10",
+    "explanation": "Each deuterium has 1 neutron and 16O has 8 neutrons: 1 + 1 + 8 = 10."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "s-Block Elements (Alkali and Alkaline Earth Metals)",
+  "intro": "This chapter covers group 1 and group 2 elements, their trends, anomalous behaviour of lithium and beryllium, important compounds such as NaOH, Na2CO3, NaHCO3, CaO, CaCO3 and plaster of Paris. JEE Main tests flame colours, solubility trends, reactions of compounds and their uses.",
+  "keyPoints": [
+   "Alkali metals give characteristic flame colours: Li crimson, Na golden yellow, K violet",
+   "Ca gives brick red, Sr crimson and Ba apple green flame",
+   "Solubility of group 2 sulphates decreases down the group",
+   "Plaster of Paris is CaSO4.1/2 H2O; gypsum is CaSO4.2H2O",
+   "Basic strength of hydroxides increases down a group"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following alkaline earth metal salts imparts a crimson red colour to the flame?",
+    "options": [
+     "Calcium salt",
+     "Strontium salt",
+     "Barium salt",
+     "Magnesium salt"
+    ],
+    "correctIndex": 1,
+    "explanation": "Strontium gives crimson red, calcium brick red and barium apple green, while magnesium gives no characteristic flame colour."
+   },
+   {
+    "type": "numerical",
+    "question": "Find the percentage by mass of water (nearest integer) in gypsum, CaSO4.2H2O. (Ca = 40, S = 32, O = 16, H = 1)",
+    "answer": "21",
+    "explanation": "Molar mass = 172 g/mol and water = 36 g, so 36/172 x 100 = 20.9, i.e. 21%.",
+    "verify": "Math.round(36/172*100)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "p-Block Elements",
+  "intro": "This chapter covers groups 13 to 18, their general trends, important compounds of boron, carbon, nitrogen, oxygen, sulphur, halogens and noble gases, oxoacids and structures. JEE Main asks shapes of molecules, acidity and basicity of oxoacids, oxidation states and reactions of industrial compounds.",
+  "keyPoints": [
+   "Inert pair effect increases down groups 13 to 16",
+   "H3PO3 is dibasic; H3PO4 is tribasic",
+   "XeF2 is linear, XeF4 is square planar, XeF6 is distorted octahedral",
+   "Ostwald process makes HNO3; Contact process makes H2SO4",
+   "Interhalogen compounds are more reactive than halogens (except F2)"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "The shape of the XeF4 molecule is:",
+    "options": [
+     "square planar",
+     "tetrahedral",
+     "see-saw",
+     "octahedral"
+    ],
+    "correctIndex": 0,
+    "explanation": "Xe has 4 bond pairs and 2 lone pairs (octahedral electron geometry), giving square planar shape."
+   },
+   {
+    "type": "numerical",
+    "question": "How many ionisable hydrogen atoms are present in one molecule of H3PO3?",
+    "answer": "2",
+    "explanation": "H3PO3 has two P-OH groups and one P-H bond; only the O-H hydrogens ionise."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "d- and f-Block Elements",
+  "intro": "This chapter covers the transition and inner transition elements, their electronic configurations, properties, oxidation states, magnetic behaviour, and important compounds KMnO4 and K2Cr2O7. JEE Main tests unpaired electrons, spin-only magnetic moment, colour, lanthanoid contraction and oxidising behaviour.",
+  "keyPoints": [
+   "Transition elements have partially filled d-orbitals",
+   "Spin-only magnetic moment = sqrt(n(n+2)) BM",
+   "Colour arises from d-d transitions",
+   "Lanthanoid contraction: steady decrease in size from La to Lu",
+   "KMnO4 and K2Cr2O7 are strong oxidising agents"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Among Ti, Cr, Mn and Fe, which element shows the highest oxidation state in its compounds?",
+    "options": [
+     "Ti",
+     "Cr",
+     "Fe",
+     "Mn"
+    ],
+    "correctIndex": 3,
+    "explanation": "Mn shows oxidation states up to +7 (as in KMnO4), higher than Cr (+6), Fe (+6) and Ti (+4)."
+   },
+   {
+    "type": "numerical",
+    "question": "Calculate the spin-only magnetic moment (in BM, two decimal places) of Fe3+ (atomic number of Fe = 26).",
+    "answer": "5.92",
+    "explanation": "Fe3+ is d5 with 5 unpaired electrons; mu = sqrt(5 x 7) = sqrt(35) = 5.92 BM.",
+    "verify": "Math.round(Math.sqrt(35)*100)/100"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Coordination Compounds",
+  "intro": "This chapter covers Werner's theory, ligands, coordination number, IUPAC nomenclature, isomerism, valence bond and crystal field theories and organometallic basics. JEE Main asks oxidation states, naming, isomer counting, hybridisation, magnetic behaviour and number of ions produced.",
+  "keyPoints": [
+   "Coordination number = number of donor atoms attached to the metal",
+   "Ambidentate ligands (such as SCN-, NO2-) bind through two different atoms",
+   "Octahedral complexes: sp3d2 (outer) or d2sp3 (inner)",
+   "Crystal field splitting: t2g and eg in octahedral field",
+   "Only ionisable (outer sphere) Cl- is precipitated by AgNO3"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following is an ambidentate ligand?",
+    "options": [
+     "en",
+     "SCN-",
+     "Cl-",
+     "NH3"
+    ],
+    "correctIndex": 1,
+    "explanation": "SCN- can coordinate either through S or through N, so it is ambidentate."
+   },
+   {
+    "type": "numerical",
+    "question": "How many moles of AgCl are precipitated when excess AgNO3 is added to 1 mol of [Co(NH3)5Cl]Cl2?",
+    "answer": "2",
+    "explanation": "Only the two Cl- outside the coordination sphere are ionisable; the coordinated Cl- is not precipitated."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Environmental Chemistry",
+  "intro": "This chapter covers atmospheric pollutants, acid rain, smog, ozone layer depletion, greenhouse effect, water pollution and green chemistry. JEE Main asks conceptual NCERT-based questions on pollutants, their sources and effects, and the chemistry behind ozone depletion and acid rain.",
+  "keyPoints": [
+   "Acid rain has pH below 5.6 and is caused mainly by SO2 and NOx",
+   "Greenhouse gases include CO2, CH4, N2O, O3 and CFCs",
+   "CFCs release Cl atoms that destroy stratospheric ozone",
+   "Photochemical smog contains NO2, O3 and PAN",
+   "BOD measures organic pollution in water"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Acid rain is caused mainly by dissolved oxides of:",
+    "options": [
+     "carbon and hydrogen",
+     "phosphorus and argon",
+     "sulphur and nitrogen",
+     "sodium and potassium"
+    ],
+    "correctIndex": 2,
+    "explanation": "SO2 and NOx dissolve in rain water forming H2SO4 and HNO3, which lower the pH below 5.6."
+   },
+   {
+    "type": "numerical",
+    "question": "How many of the following are greenhouse gases: CO2, CH4, N2O, O2, N2, Ar?",
+    "answer": "3",
+    "explanation": "CO2, CH4 and N2O absorb infrared radiation, whereas O2, N2 and Ar do not."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Purification and Characterisation of Organic Compounds",
+  "intro": "This chapter covers methods of purification such as crystallisation, distillation and chromatography, and qualitative and quantitative analysis of organic compounds. JEE Main asks Lassaigne's test observations, Duma's and Kjeldahl's methods, and percentage composition calculations based on given masses and gas volumes.",
+  "keyPoints": [
+   "Steam distillation purifies compounds immiscible with water",
+   "Fractional distillation separates liquids with close boiling points",
+   "Lassaigne's test detects N, S and halogens",
+   "Duma's method: % N = (28 x V(N2 at STP))/(22400 x mass) x 100",
+   "Kjeldahl's method is unsuitable for nitro, azo and ring-nitrogen compounds"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "In Lassaigne's test, the sodium fusion extract gives a Prussian blue colour with FeSO4 and FeCl3. This confirms the presence of:",
+    "options": [
+     "nitrogen",
+     "sulphur",
+     "chlorine",
+     "phosphorus"
+    ],
+    "correctIndex": 0,
+    "explanation": "Formation of ferric ferrocyanide (Prussian blue) indicates nitrogen in the form of cyanide."
+   },
+   {
+    "type": "numerical",
+    "question": "In Duma's method, 0.28 g of an organic compound gave 56 mL of N2 at STP. Find the percentage of nitrogen. (N = 14; molar volume = 22400 mL at STP)",
+    "answer": "25",
+    "explanation": "Moles of N2 = 56/22400 = 0.0025, mass N = 0.07 g; % N = 0.07/0.28 x 100 = 25.",
+    "verify": "(56/22400)*28/0.28*100"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Basic Principles of Organic Chemistry",
+  "intro": "This chapter covers IUPAC nomenclature, isomerism, electronic effects such as inductive, resonance and hyperconjugation, reaction intermediates and types of organic reactions. JEE Main asks stability order of carbocations, carbanions and free radicals, acidity comparisons, and counting of isomers.",
+  "keyPoints": [
+   "Carbocation stability: 3 > 2 > 1 > methyl",
+   "Inductive effect decreases with distance",
+   "Resonance and hyperconjugation stabilise intermediates",
+   "Structural isomers differ in connectivity",
+   "Electrophiles are electron-deficient; nucleophiles are electron-rich"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following is the most stable carbocation?",
+    "options": [
+     "(CH3)2CH+",
+     "CH3CH2+",
+     "CH3+",
+     "(CH3)3C+"
+    ],
+    "correctIndex": 3,
+    "explanation": "The tertiary carbocation is stabilised by nine hyperconjugative C-H bonds and three +I alkyl groups."
+   },
+   {
+    "type": "numerical",
+    "question": "How many structural isomers (including chain isomers) exist for the alkane C5H12?",
+    "answer": "3",
+    "explanation": "C5H12 has n-pentane, isopentane (2-methylbutane) and neopentane (2,2-dimethylpropane)."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Hydrocarbons",
+  "intro": "This chapter covers alkanes, alkenes, alkynes and aromatic hydrocarbons, their preparation, properties and reaction mechanisms. JEE Main asks addition and substitution reactions, Markovnikov and anti-Markovnikov additions, ozonolysis, aromaticity, combustion stoichiometry and product prediction across all three hydrocarbon classes.",
+  "keyPoints": [
+   "Alkenes undergo electrophilic addition obeying Markovnikov's rule",
+   "Addition of HBr with peroxide follows anti-Markovnikov orientation",
+   "Alkanes undergo free-radical substitution",
+   "Benzene undergoes electrophilic substitution",
+   "Huckel rule: aromatic when (4n + 2) pi electrons"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "The major product when propene reacts with HBr in the absence of peroxide is:",
+    "options": [
+     "1-bromopropane",
+     "2-bromopropane",
+     "1,2-dibromopropane",
+     "propane"
+    ],
+    "correctIndex": 1,
+    "explanation": "H+ adds to the carbon with more hydrogens, forming the more stable secondary carbocation, hence 2-bromopropane."
+   },
+   {
+    "type": "numerical",
+    "question": "What volume of O2 (in mL) is needed for complete combustion of 20 mL of ethene, C2H4, at the same temperature and pressure?",
+    "answer": "60",
+    "explanation": "C2H4 + 3O2 -> 2CO2 + 2H2O; volume ratio is 1:3, so 20 x 3 = 60 mL.",
+    "verify": "20*3"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Organic Compounds Containing Halogens",
+  "intro": "This chapter covers alkyl and aryl halides, their preparation, physical properties, nucleophilic substitution (SN1 and SN2), elimination reactions and stereochemistry. JEE Main asks reactivity orders, mechanism identification, named reactions and chirality-based questions, including counting stereoisomers.",
+  "keyPoints": [
+   "SN1: two steps, carbocation intermediate, racemisation",
+   "SN2: one step, inversion of configuration",
+   "Tertiary halides favour SN1; primary halides favour SN2",
+   "Wurtz reaction: 2 R-X + 2Na -> R-R + 2NaX (dry ether)",
+   "Finkelstein reaction: R-Cl + NaI -> R-I in acetone"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Ethyl bromide on treatment with sodium metal in dry ether gives mainly:",
+    "options": [
+     "butane",
+     "ethane",
+     "propane",
+     "ethene"
+    ],
+    "correctIndex": 0,
+    "explanation": "Wurtz reaction couples two alkyl groups: 2 C2H5Br + 2Na -> C4H10 + 2NaBr."
+   },
+   {
+    "type": "numerical",
+    "question": "How many stereoisomers are possible for 2-bromo-3-chlorobutane, CH3-CHBr-CHCl-CH3?",
+    "answer": "4",
+    "explanation": "It has two different chiral carbons, so 2^2 = 4 stereoisomers.",
+    "verify": "Math.pow(2,2)"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Alcohols, Phenols and Ethers",
+  "intro": "This chapter covers preparation and properties of alcohols, phenols and ethers, their acidity, dehydration, oxidation, named reactions and distinguishing tests. JEE Main asks about oxidation products, Lucas test, Reimer-Tiemann and Kolbe reactions, acidic strength and Williamson synthesis.",
+  "keyPoints": [
+   "Lucas test: tertiary reacts immediately, secondary in about 5 minutes, primary on heating",
+   "Primary alcohol -> aldehyde -> carboxylic acid on oxidation",
+   "Phenol is more acidic than alcohols due to resonance stabilisation of phenoxide",
+   "Williamson synthesis: R-ONa + R'-X -> R-O-R'",
+   "Reimer-Tiemann gives salicylaldehyde from phenol"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which alcohol gives turbidity immediately with Lucas reagent at room temperature?",
+    "options": [
+     "propan-1-ol",
+     "propan-2-ol",
+     "2-methylpropan-2-ol",
+     "butan-1-ol"
+    ],
+    "correctIndex": 2,
+    "explanation": "Tertiary alcohols form the stable tertiary carbocation fastest and give immediate cloudiness."
+   },
+   {
+    "type": "numerical",
+    "question": "How many moles of H2 gas are liberated when 1 mol of glycerol (propane-1,2,3-triol) reacts with excess sodium metal?",
+    "answer": "1.5",
+    "explanation": "Each -OH gives 1/2 H2; with three -OH groups, 3/2 = 1.5 mol H2.",
+    "verify": "3/2"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Aldehydes, Ketones and Carboxylic Acids",
+  "intro": "This chapter covers preparation and properties of aldehydes, ketones and carboxylic acids, nucleophilic addition, aldol and Cannizzaro reactions, and distinguishing tests. JEE Main asks about Tollens, Fehling and iodoform tests, acidity order of acids, and product prediction.",
+  "keyPoints": [
+   "Aldehydes are more reactive than ketones towards nucleophilic addition",
+   "Tollens' reagent test: aldehydes give silver mirror",
+   "Iodoform test: methyl ketones and CH3CH(OH)- groups",
+   "Aldol condensation requires alpha hydrogen",
+   "Cannizzaro reaction: aldehydes lacking alpha hydrogen"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following gives a positive iodoform test?",
+    "options": [
+     "Benzaldehyde",
+     "Propanal",
+     "Pentan-3-one",
+     "Acetone"
+    ],
+    "correctIndex": 3,
+    "explanation": "Acetone contains the CH3-CO- group, which gives yellow iodoform with I2 and NaOH."
+   },
+   {
+    "type": "numerical",
+    "question": "4.4 g of ethanal is treated with excess Tollens' reagent. Find the mass of silver (in g) deposited. (C = 12, H = 1, O = 16, Ag = 108)",
+    "answer": "21.6",
+    "explanation": "Moles of ethanal = 4.4/44 = 0.1; each gives 2 Ag, so 0.2 x 108 = 21.6 g.",
+    "verify": "4.4/44*2*108"
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Organic Compounds Containing Nitrogen",
+  "intro": "This chapter covers amines, diazonium salts, nitro compounds and cyanides, their preparation, basic strength and reactions. JEE Main asks about carbylamine and Hinsberg tests, Hofmann bromamide reaction, diazotisation and coupling, and basicity order of amines.",
+  "keyPoints": [
+   "Primary amines give the carbylamine test with CHCl3 and KOH",
+   "Hinsberg reagent: benzenesulfonyl chloride",
+   "Hofmann bromamide: amide -> amine with one carbon less",
+   "Diazonium salts of aromatic amines are made at 0-5 degree C",
+   "Aromatic amines are weaker bases than aliphatic amines"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following gives a foul-smelling isocyanide with CHCl3 and alcoholic KOH?",
+    "options": [
+     "(CH3)2NH",
+     "(CH3)3N",
+     "C6H5NH2",
+     "(C2H5)2NH"
+    ],
+    "correctIndex": 2,
+    "explanation": "Only primary amines, such as aniline, give the carbylamine reaction."
+   },
+   {
+    "type": "numerical",
+    "question": "What is the total number of isomeric amines (primary, secondary and tertiary) having molecular formula C3H9N?",
+    "answer": "4",
+    "explanation": "Propan-1-amine, propan-2-amine, N-methylethanamine and N,N-dimethylmethanamine give 4 isomers."
+   }
+  ]
+ },
+ {
+  "subject": "Chemistry",
+  "topic": "Biomolecules",
+  "intro": "This chapter covers carbohydrates, proteins, amino acids, vitamins, nucleic acids and enzymes. JEE Main asks about reducing and non-reducing sugars, glycosidic linkages, peptide bonds, structure of DNA and RNA, and classification of vitamins, mostly as direct NCERT-based facts.",
+  "keyPoints": [
+   "Glucose and fructose are monosaccharides; sucrose is a disaccharide",
+   "Sucrose is a non-reducing sugar",
+   "Peptide bond is an amide linkage between amino acids",
+   "DNA has deoxyribose and A, T, G, C; RNA has ribose and A, U, G, C",
+   "Vitamins A, D, E and K are fat soluble; B and C are water soluble"
+  ],
+  "samples": [
+   {
+    "type": "mcq",
+    "question": "Which of the following is a non-reducing sugar?",
+    "options": [
+     "Glucose",
+     "Sucrose",
+     "Fructose",
+     "Maltose"
+    ],
+    "correctIndex": 1,
+    "explanation": "In sucrose the glycosidic bond involves the anomeric carbons of both glucose and fructose, leaving no free aldehyde or ketone group."
+   },
+   {
+    "type": "numerical",
+    "question": "How many peptide bonds are present in a linear polypeptide made from 10 amino acid residues?",
+    "answer": "9",
+    "explanation": "Joining n amino acids in a chain forms (n - 1) peptide bonds, so 10 residues give 9."
+   }
+  ]
+ }
+]

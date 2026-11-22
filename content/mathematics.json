@@ -1,0 +1,593 @@
+[
+  {
+    "subject": "Mathematics",
+    "topic": "Sets, Relations and Functions",
+    "intro": "This chapter covers set operations, Venn diagram counting, types of relations (reflexive, symmetric, transitive), and functions including one-one, onto, composition and inverse. JEE Main tests it through counting problems on relations and functions, domain and range questions, and checking whether a given function is injective or surjective.",
+    "keyPoints": [
+      "n(A u B) = n(A) + n(B) - n(A n B)",
+      "A set with n elements has 2^n subsets and n^2 ordered pairs in A x A",
+      "Number of functions from A to B = |B|^|A|; one-one needs |A| <= |B|",
+      "Number of onto functions from m to n elements = sum of (-1)^r C(n,r)(n-r)^m",
+      "f is invertible if and only if it is both one-one and onto"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The number of onto functions from a set with 4 elements to a set with 3 elements is:",
+        "options": [
+          "24",
+          "36",
+          "81",
+          "12"
+        ],
+        "correctIndex": 1,
+        "explanation": "By inclusion-exclusion, onto functions = 3^4 - 3*2^4 + 3*1^4 = 81 - 48 + 3 = 36."
+      },
+      {
+        "type": "numerical",
+        "question": "The number of relations on the set {1, 2, 3} that are both reflexive and symmetric is:",
+        "answer": "8",
+        "explanation": "All 3 diagonal pairs are forced. Each of the 3 unordered off-diagonal pairs is either included or not, giving 2^3 = 8.",
+        "verify": "Math.pow(2,3)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Complex Numbers",
+    "intro": "This chapter deals with the algebra of complex numbers, modulus and argument, the conjugate, polar form, De Moivre's theorem and roots of unity. JEE Main questions usually ask for powers and simplification of expressions, geometric interpretation of |z - a| conditions, and sums involving cube roots of unity.",
+    "keyPoints": [
+      "z = x + iy, |z| = sqrt(x^2 + y^2), conj(z) = x - iy, z*conj(z) = |z|^2",
+      "|z1 z2| = |z1||z2| and arg(z1 z2) = arg z1 + arg z2",
+      "De Moivre: (cos t + i sin t)^n = cos(nt) + i sin(nt)",
+      "nth roots of unity sum to zero; 1 + w + w^2 = 0 for cube roots",
+      "|z - a| = r represents a circle with centre a and radius r"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The value of (1 + i)^8 is:",
+        "options": [
+          "-16",
+          "16i",
+          "16",
+          "8"
+        ],
+        "correctIndex": 2,
+        "explanation": "(1 + i)^2 = 2i, so (1 + i)^8 = (2i)^4 = 16 * i^4 = 16."
+      },
+      {
+        "type": "numerical",
+        "question": "If z1 = 3 + 4i and z2 = 1 - 2i, then |z1/z2|^2 equals:",
+        "answer": "5",
+        "explanation": "|z1|^2 = 25 and |z2|^2 = 5, so |z1/z2|^2 = 25/5 = 5.",
+        "verify": "(3*3+4*4)/(1+4)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Quadratic Equations",
+    "intro": "This chapter studies roots of ax^2 + bx + c = 0, the discriminant, relations between roots and coefficients, and the sign and range of quadratic expressions. JEE Main typically asks for symmetric functions of roots, conditions for common roots or real roots, and inequalities solved with the wavy curve method.",
+    "keyPoints": [
+      "Roots = (-b +- sqrt(b^2 - 4ac)) / (2a); D = b^2 - 4ac",
+      "Sum of roots = -b/a, product of roots = c/a",
+      "Roots differ by |alpha - beta| = sqrt(D)/|a|",
+      "Common root condition: (c1a2 - c2a1)^2 = (a1b2 - a2b1)(b1c2 - b2c1)",
+      "If a > 0, the minimum of ax^2 + bx + c is at x = -b/(2a)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "If the roots of x^2 - 5x + k = 0 differ by 3, then k equals:",
+        "options": [
+          "6",
+          "3",
+          "2",
+          "4"
+        ],
+        "correctIndex": 3,
+        "explanation": "Sum is 5 and difference is 3, so the roots are 4 and 1. Hence k = 4 * 1 = 4."
+      },
+      {
+        "type": "numerical",
+        "question": "If alpha and beta are the roots of 2x^2 - 6x + 3 = 0, then alpha^2 + beta^2 equals:",
+        "answer": "6",
+        "explanation": "alpha + beta = 3 and alpha*beta = 3/2, so alpha^2 + beta^2 = 9 - 2(3/2) = 6.",
+        "verify": "Math.pow(3,2)-2*1.5"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Matrices and Determinants",
+    "intro": "This chapter covers matrix algebra, transpose, adjoint and inverse, properties of determinants, Cramer's rule and solving linear systems. JEE Main frequently tests determinant properties such as det(kA) and det(adj A), matrix powers, and the consistency conditions of linear systems.",
+    "keyPoints": [
+      "det(AB) = det A * det B; det(kA) = k^n det A for an n x n matrix",
+      "A * adj(A) = det(A) * I; A^(-1) = adj(A)/det(A)",
+      "det(adj A) = (det A)^(n-1)",
+      "(AB)^T = B^T A^T and (AB)^(-1) = B^(-1) A^(-1)",
+      "A homogeneous system has non-trivial solutions iff det = 0"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "If A is a 3 x 3 matrix with det(A) = 2, then det(adj(2A)) equals:",
+        "options": [
+          "256",
+          "64",
+          "16",
+          "1024"
+        ],
+        "correctIndex": 0,
+        "explanation": "det(2A) = 2^3 * 2 = 16. For a 3 x 3 matrix, det(adj B) = (det B)^2, so the answer is 16^2 = 256."
+      },
+      {
+        "type": "numerical",
+        "question": "If A = [[1, 2], [3, 4]], then the trace of A^2 is:",
+        "answer": "29",
+        "explanation": "A^2 = [[7, 10], [15, 22]], so the trace is 7 + 22 = 29.",
+        "verify": "(1*1+2*3)+(3*2+4*4)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Permutations and Combinations",
+    "intro": "This chapter develops the fundamental counting principle, permutations with and without repetition, combinations, circular arrangements and distribution of objects. JEE Main problems are typically word-arrangement, digit-formation, selection with restrictions, and grouping questions that need careful case division.",
+    "keyPoints": [
+      "nPr = n!/(n-r)!, nCr = n!/(r!(n-r)!), nCr = nC(n-r)",
+      "Arrangements of n objects with repeats = n!/(p! q! r!)",
+      "Circular arrangements of n distinct objects = (n-1)!",
+      "Dividing n distinct objects into groups of sizes a, b, c: n!/(a! b! c!), divide further by k! for k equal-sized groups",
+      "Number of non-negative solutions of x1 + ... + xr = n is C(n+r-1, r-1)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The number of distinct arrangements of the letters of the word LEVEL is:",
+        "options": [
+          "60",
+          "120",
+          "30",
+          "15"
+        ],
+        "correctIndex": 2,
+        "explanation": "LEVEL has 5 letters with L repeated twice and E repeated twice: 5!/(2! 2!) = 30."
+      },
+      {
+        "type": "numerical",
+        "question": "How many 4-digit even numbers can be formed using the digits 1, 2, 3, 4, 5 without repetition?",
+        "answer": "48",
+        "explanation": "The units digit is 2 or 4 (2 ways). The remaining 3 places use 4, 3, 2 choices: 2 * 4 * 3 * 2 = 48.",
+        "verify": "2*4*3*2"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Binomial Theorem",
+    "intro": "This chapter covers the binomial expansion for positive integer index, general and middle terms, binomial coefficients and their properties. JEE Main usually asks for a specific coefficient, the term independent of x, sums of binomial coefficients, or divisibility and remainder questions.",
+    "keyPoints": [
+      "(a + b)^n = sum of C(n,r) a^(n-r) b^r",
+      "General term T(r+1) = C(n,r) a^(n-r) b^r",
+      "C(n,0) + C(n,1) + ... + C(n,n) = 2^n; alternating sum = 0",
+      "C(n,r) + C(n,r-1) = C(n+1,r)",
+      "Middle term: n even gives T(n/2 + 1); n odd gives two middle terms"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The term independent of x in the expansion of (x^2 + 1/x)^6 is:",
+        "options": [
+          "15",
+          "20",
+          "30",
+          "6"
+        ],
+        "correctIndex": 0,
+        "explanation": "T(r+1) = C(6,r) x^(12-2r) x^(-r) = C(6,r) x^(12-3r). Setting 12 - 3r = 0 gives r = 4, so the term is C(6,4) = 15."
+      },
+      {
+        "type": "numerical",
+        "question": "The coefficient of x^4 in the expansion of (1 + 2x)^6 is:",
+        "answer": "240",
+        "explanation": "The coefficient is C(6,4) * 2^4 = 15 * 16 = 240.",
+        "verify": "15*16"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Sequence and Series",
+    "intro": "This chapter covers arithmetic, geometric and harmonic progressions, means, and sums of special series such as sums of squares and telescoping series. JEE Main questions usually involve finding terms or sums from given conditions, relations between AM, GM and HM, and summation of non-standard series.",
+    "keyPoints": [
+      "AP: a_n = a + (n-1)d, S_n = n/2 (2a + (n-1)d)",
+      "GP: a_n = a r^(n-1), S_n = a(r^n - 1)/(r - 1), S_inf = a/(1 - r) for |r| < 1",
+      "AM >= GM >= HM for positive numbers, with AM * HM = GM^2 for two numbers",
+      "Sum of k = n(n+1)/2, sum of k^2 = n(n+1)(2n+1)/6, sum of k^3 = [n(n+1)/2]^2",
+      "Telescoping: 1/(k(k+1)) = 1/k - 1/(k+1)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "In an AP the 4th term is 10 and the 9th term is 25. The sum of the first 10 terms is:",
+        "options": [
+          "135",
+          "150",
+          "155",
+          "145"
+        ],
+        "correctIndex": 3,
+        "explanation": "5d = 15 gives d = 3 and a = 10 - 9 = 1. Then S10 = 5(2*1 + 9*3) = 145."
+      },
+      {
+        "type": "numerical",
+        "question": "The value of 1*2 + 2*3 + 3*4 + ... + 10*11 is:",
+        "answer": "440",
+        "explanation": "The sum of k(k+1) for k = 1 to n equals n(n+1)(n+2)/3. For n = 10 this is 10*11*12/3 = 440.",
+        "verify": "10*11*12/3"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Limit, Continuity and Differentiability",
+    "intro": "This chapter covers evaluation of limits using standard results, L'Hopital's rule and series expansions, continuity at a point, and differentiability of piecewise and modulus functions. JEE Main often asks for limits of indeterminate forms and for parameters that make a function continuous or differentiable.",
+    "keyPoints": [
+      "lim (sin x)/x = 1, lim (tan x)/x = 1, lim (e^x - 1)/x = 1, lim ln(1+x)/x = 1 as x tends to 0",
+      "lim (1 + 1/x)^x = e as x tends to infinity",
+      "Continuity at a: LHL = RHL = f(a)",
+      "Differentiable at a means LHD = RHD; differentiable implies continuous",
+      "L'Hopital's rule applies to 0/0 and inf/inf forms"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The value of lim (x tends to 0) of (e^(3x) - 1)/(sin 2x) is:",
+        "options": [
+          "2/3",
+          "3/2",
+          "3",
+          "1/2"
+        ],
+        "correctIndex": 1,
+        "explanation": "Write it as [(e^(3x) - 1)/(3x)] * [2x/sin 2x] * (3/2). The two brackets tend to 1, giving 3/2."
+      },
+      {
+        "type": "numerical",
+        "question": "Let f(x) = x^2 for x <= 1 and f(x) = ax + b for x > 1. If f is differentiable at x = 1, then a + b equals:",
+        "answer": "1",
+        "explanation": "Continuity gives a + b = 1. Differentiability gives a = 2, so b = -1; in any case a + b = 1."
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Integral Calculus",
+    "intro": "This chapter covers indefinite integrals by substitution, parts and partial fractions, definite integrals with their properties, and area under curves. JEE Main commonly tests the property f(x) -> f(a+b-x), integrals of even and odd functions, and areas bounded by parabolas and lines.",
+    "keyPoints": [
+      "int x^n dx = x^(n+1)/(n+1) + C; int 1/x dx = ln|x| + C",
+      "int u dv = uv - int v du (integration by parts)",
+      "int_a^b f(x) dx = int_a^b f(a+b-x) dx",
+      "int_(-a)^a f(x) dx = 2 int_0^a f(x) dx for even f, and 0 for odd f",
+      "Area between curves = int |f(x) - g(x)| dx over the interval"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The value of the integral of sin x/(sin x + cos x) from 0 to pi/2 is:",
+        "options": [
+          "pi/2",
+          "1",
+          "pi/4",
+          "pi/8"
+        ],
+        "correctIndex": 2,
+        "explanation": "Using the property f(x) -> f(pi/2 - x), I = integral of cos x/(sin x + cos x). Adding gives 2I = pi/2, so I = pi/4."
+      },
+      {
+        "type": "numerical",
+        "question": "The value of the integral of (x^3 + 3x^2 + 1) dx from -2 to 2 is:",
+        "answer": "20",
+        "explanation": "The odd term x^3 integrates to 0. The rest gives 2 * (8) + 4 = 20, or directly [x^4/4 + x^3 + x] from -2 to 2 = 14 - (-6) = 20.",
+        "verify": "(4+8+2)-(4-8-2)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Differential Equations",
+    "intro": "This chapter covers order and degree, formation of differential equations, and solving variable-separable, homogeneous and linear first-order equations. JEE Main generally asks for integrating factors, particular solutions with initial conditions, and identifying the equation of a family of curves.",
+    "keyPoints": [
+      "Variable separable: f(y) dy = g(x) dx, integrate both sides",
+      "Linear: dy/dx + P y = Q has integrating factor e^(int P dx)",
+      "Solution of linear form: y * IF = int Q * IF dx + C",
+      "Homogeneous: put y = vx and separate variables",
+      "Order = highest derivative; degree = its power after removing radicals"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The integrating factor of dy/dx + (2/x) y = x^2 (for x > 0) is:",
+        "options": [
+          "x^2",
+          "2x",
+          "e^(2x)",
+          "1/x^2"
+        ],
+        "correctIndex": 0,
+        "explanation": "IF = e^(int 2/x dx) = e^(2 ln x) = x^2."
+      },
+      {
+        "type": "numerical",
+        "question": "If dy/dx = 2y with y(0) = 3, then y(ln 2) equals:",
+        "answer": "12",
+        "explanation": "y = 3e^(2x), so y(ln 2) = 3 * e^(2 ln 2) = 3 * 4 = 12.",
+        "verify": "3*Math.pow(2,2)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Straight Lines",
+    "intro": "This chapter covers slope and intercept forms of a line, angle between lines, distance of a point from a line, and families of lines through an intersection point. JEE Main tests it through areas of triangles, distances between parallel lines, reflections, and locus problems.",
+    "keyPoints": [
+      "Slope form y = mx + c; intercept form x/a + y/b = 1",
+      "Distance of (x1, y1) from ax + by + c = 0 is |ax1 + by1 + c|/sqrt(a^2 + b^2)",
+      "Distance between ax + by + c1 = 0 and ax + by + c2 = 0 is |c1 - c2|/sqrt(a^2 + b^2)",
+      "tan(theta) = |(m1 - m2)/(1 + m1 m2)|",
+      "Area of triangle = (1/2)|x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)|"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The distance between the parallel lines 3x + 4y = 10 and 3x + 4y + 5 = 0 is:",
+        "options": [
+          "2",
+          "3",
+          "5",
+          "15"
+        ],
+        "correctIndex": 1,
+        "explanation": "Write the first as 3x + 4y - 10 = 0. The distance is |-10 - 5|/sqrt(9 + 16) = 15/5 = 3."
+      },
+      {
+        "type": "numerical",
+        "question": "The area of the triangle with vertices (1, 2), (4, 6) and (7, 3) is:",
+        "answer": "10.5",
+        "explanation": "Area = (1/2)|1(6-3) + 4(3-2) + 7(2-6)| = (1/2)|3 + 4 - 28| = 21/2 = 10.5.",
+        "verify": "0.5*Math.abs(1*(6-3)+4*(3-2)+7*(2-6))"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Circles",
+    "intro": "This chapter covers standard and general equations of a circle, tangents and normals, chord properties, and relations between two circles. JEE Main questions typically ask for centre and radius from a general equation, the length of a tangent, and conditions for touching or intersecting circles.",
+    "keyPoints": [
+      "Centre (h, k), radius r: (x-h)^2 + (y-k)^2 = r^2",
+      "General form x^2 + y^2 + 2gx + 2fy + c = 0: centre (-g, -f), radius sqrt(g^2 + f^2 - c)",
+      "Length of tangent from P = sqrt(S1), where S1 is the circle expression evaluated at P",
+      "Line y = mx + c touches the circle x^2 + y^2 = r^2 iff c^2 = r^2(1 + m^2)",
+      "Circles touch externally if d = r1 + r2, internally if d = |r1 - r2|"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The radius of the circle x^2 + y^2 - 4x + 6y - 12 = 0 is:",
+        "options": [
+          "sqrt(13)",
+          "25",
+          "7",
+          "5"
+        ],
+        "correctIndex": 3,
+        "explanation": "Here g = -2, f = 3, c = -12, so the radius is sqrt(4 + 9 + 12) = sqrt(25) = 5."
+      },
+      {
+        "type": "numerical",
+        "question": "The length of the tangent from the point (6, 5) to the circle x^2 + y^2 - 2x - 4y - 4 = 0 is:",
+        "answer": "5",
+        "explanation": "S1 = 36 + 25 - 12 - 20 - 4 = 25, so the tangent length is sqrt(25) = 5.",
+        "verify": "Math.sqrt(36+25-12-20-4)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Conic Sections",
+    "intro": "This chapter covers the parabola, ellipse and hyperbola: standard equations, foci, directrices, eccentricity, tangents and normals. JEE Main commonly asks for eccentricity, length of latus rectum, distance between foci, and conditions for a line to be tangent to a conic.",
+    "keyPoints": [
+      "Parabola y^2 = 4ax: focus (a, 0), latus rectum 4a",
+      "Ellipse x^2/a^2 + y^2/b^2 = 1: e = sqrt(1 - b^2/a^2), latus rectum 2b^2/a",
+      "Hyperbola x^2/a^2 - y^2/b^2 = 1: e = sqrt(1 + b^2/a^2), foci at (+-ae, 0)",
+      "Tangent to y^2 = 4ax: y = mx + a/m",
+      "Line y = mx + c touches the ellipse iff c^2 = a^2 m^2 + b^2"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The eccentricity of the ellipse x^2/25 + y^2/9 = 1 is:",
+        "options": [
+          "4/5",
+          "3/5",
+          "5/4",
+          "16/25"
+        ],
+        "correctIndex": 0,
+        "explanation": "e = sqrt(1 - b^2/a^2) = sqrt(1 - 9/25) = sqrt(16/25) = 4/5."
+      },
+      {
+        "type": "numerical",
+        "question": "The distance between the foci of the hyperbola x^2/9 - y^2/16 = 1 is:",
+        "answer": "10",
+        "explanation": "Here c^2 = a^2 + b^2 = 9 + 16 = 25, so c = 5 and the foci are 2c = 10 apart.",
+        "verify": "2*Math.sqrt(9+16)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Three Dimensional Geometry",
+    "intro": "This chapter covers direction cosines and ratios, equations of lines and planes in space, angles between them, and shortest distance between skew lines. JEE Main asks mostly for distances from a point to a plane or line, shortest distance between lines, and foot or image of a point.",
+    "keyPoints": [
+      "Direction cosines satisfy l^2 + m^2 + n^2 = 1",
+      "Line: (x-x1)/a = (y-y1)/b = (z-z1)/c",
+      "Distance of (x1, y1, z1) from ax + by + cz + d = 0 is |ax1 + by1 + cz1 + d|/sqrt(a^2 + b^2 + c^2)",
+      "Shortest distance between skew lines = |(a2 - a1) . (b1 x b2)| / |b1 x b2|",
+      "Angle between planes equals angle between their normals"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The distance of the point (1, 2, 3) from the plane x + 2y + 2z = 2 is:",
+        "options": [
+          "2",
+          "11/3",
+          "3",
+          "1"
+        ],
+        "correctIndex": 2,
+        "explanation": "Distance = |1 + 4 + 6 - 2|/sqrt(1 + 4 + 4) = 9/3 = 3."
+      },
+      {
+        "type": "numerical",
+        "question": "The shortest distance between the lines r = t(1, 2, 2) and r = (0, 3, -3) + s(2, 1, -2) is:",
+        "answer": "3",
+        "explanation": "b1 x b2 = (-6, 6, -3) with magnitude 9. The vector joining the points is (0, 3, -3), and its dot product with the cross product is 27, so the distance is 27/9 = 3.",
+        "verify": "Math.abs(-6*0+6*3-3*(-3))/Math.sqrt(36+36+9)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Vector Algebra",
+    "intro": "This chapter covers vectors in two and three dimensions, dot and cross products, scalar triple product and their geometric meanings. JEE Main questions usually involve projections, areas and volumes, coplanarity conditions, and finding vectors satisfying given product relations.",
+    "keyPoints": [
+      "a . b = |a||b| cos(theta); a x b has magnitude |a||b| sin(theta)",
+      "|a x b|^2 + (a . b)^2 = |a|^2 |b|^2",
+      "Area of parallelogram = |a x b|; area of triangle = (1/2)|a x b|",
+      "Volume of parallelepiped = |[a b c]| = |a . (b x c)|",
+      "Three vectors are coplanar iff [a b c] = 0"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "If |a| = 3, |b| = 4 and a . b = 6, then |a x b| equals:",
+        "options": [
+          "12",
+          "6",
+          "3 sqrt(3)",
+          "6 sqrt(3)"
+        ],
+        "correctIndex": 3,
+        "explanation": "|a x b|^2 = |a|^2|b|^2 - (a.b)^2 = 144 - 36 = 108, so |a x b| = 6 sqrt(3)."
+      },
+      {
+        "type": "numerical",
+        "question": "The volume of the parallelepiped with edges a = (1, 2, 3), b = (0, 1, 4) and c = (2, 0, 1) is:",
+        "answer": "11",
+        "explanation": "The scalar triple product is the determinant 1(1-0) - 2(0-8) + 3(0-2) = 1 + 16 - 6 = 11, which is positive.",
+        "verify": "1*(1*1-4*0)-2*(0*1-4*2)+3*(0*0-1*2)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Statistics and Probability",
+    "intro": "This chapter covers measures of dispersion such as variance and standard deviation, conditional probability, Bayes' theorem and binomial distribution. JEE Main questions typically ask for mean and variance of given data, total probability with multiple bags or events, and independent trials.",
+    "keyPoints": [
+      "Mean = sum(x)/n; Variance = sum(x^2)/n - (mean)^2",
+      "Variance of first n natural numbers = (n^2 - 1)/12",
+      "P(A | B) = P(A n B)/P(B); independent events: P(A n B) = P(A)P(B)",
+      "Bayes: P(Ei | A) = P(Ei)P(A | Ei) / sum of P(Ej)P(A | Ej)",
+      "Binomial: P(X = r) = C(n,r) p^r q^(n-r), mean np, variance npq"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The variance of the first 10 natural numbers is:",
+        "options": [
+          "8.5",
+          "8.25",
+          "9.25",
+          "10"
+        ],
+        "correctIndex": 1,
+        "explanation": "Variance = (n^2 - 1)/12 = 99/12 = 8.25."
+      },
+      {
+        "type": "numerical",
+        "question": "Bag A has 3 red and 2 black balls and bag B has 1 red and 4 black balls. A bag is chosen at random and a ball drawn is red. The probability that it came from bag A is:",
+        "answer": "0.75",
+        "explanation": "P(A | red) = (1/2)(3/5) / [(1/2)(3/5) + (1/2)(1/5)] = (3/5)/(4/5) = 3/4 = 0.75.",
+        "verify": "(0.5*3/5)/(0.5*3/5+0.5*1/5)"
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Trigonometry",
+    "intro": "This chapter covers trigonometric ratios and identities, multiple and sub-multiple angles, trigonometric equations, inverse trigonometric functions, and heights and distances. JEE Main often asks for values of product or sum expressions, the number of solutions in an interval, and simplification of inverse functions.",
+    "keyPoints": [
+      "sin(A+B) = sinA cosB + cosA sinB; cos(A+B) = cosA cosB - sinA sinB",
+      "sin 2A = 2 sinA cosA; cos 2A = 2cos^2 A - 1 = 1 - 2sin^2 A",
+      "sinA sin(60-A) sin(60+A) = (sin 3A)/4",
+      "General solutions: sin x = sin a gives x = n pi + (-1)^n a; cos x = cos a gives x = 2n pi +- a",
+      "sin^(-1) x + cos^(-1) x = pi/2 for x in [-1, 1]"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The value of sin 10 deg * sin 50 deg * sin 70 deg is:",
+        "options": [
+          "1/8",
+          "1/4",
+          "sqrt(3)/8",
+          "1/16"
+        ],
+        "correctIndex": 0,
+        "explanation": "Using sinA sin(60-A) sin(60+A) = (sin 3A)/4 with A = 10 deg: sin 30 deg / 4 = 1/8."
+      },
+      {
+        "type": "numerical",
+        "question": "The number of solutions of 2 sin^2 x - 3 sin x + 1 = 0 in the interval [0, 2 pi] is:",
+        "answer": "3",
+        "explanation": "Factor as (2 sin x - 1)(sin x - 1) = 0. sin x = 1/2 gives x = pi/6, 5pi/6 and sin x = 1 gives x = pi/2, so 3 solutions."
+      }
+    ]
+  },
+  {
+    "subject": "Mathematics",
+    "topic": "Mathematical Reasoning",
+    "intro": "This chapter covers statements, logical connectives, truth tables, tautologies and contradictions, negation, and the contrapositive and converse of conditionals. JEE Main questions are generally short and ask for the negation of a compound statement or whether a given expression is a tautology.",
+    "keyPoints": [
+      "Negation: ~(p and q) = ~p or ~q; ~(p or q) = ~p and ~q",
+      "p -> q is false only when p is true and q is false",
+      "~(p -> q) = p and ~q",
+      "Contrapositive of p -> q is ~q -> ~p and is equivalent to p -> q",
+      "A tautology is always true; a contradiction is always false"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The negation of the statement 'If it rains, then the match is cancelled' is:",
+        "options": [
+          "It does not rain and the match is cancelled",
+          "If the match is not cancelled, it does not rain",
+          "It rains and the match is not cancelled",
+          "It does not rain or the match is cancelled"
+        ],
+        "correctIndex": 2,
+        "explanation": "The negation of p -> q is p and ~q, which is 'It rains and the match is not cancelled'."
+      },
+      {
+        "type": "numerical",
+        "question": "The number of rows in the truth table of (p or q) -> ~r in which the statement is false is:",
+        "answer": "3",
+        "explanation": "It is false only when (p or q) is true and ~r is false, i.e. r is true. With r true, (p, q) can be TT, TF or FT, so 3 rows."
+      }
+    ]
+  }
+]

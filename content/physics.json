@@ -1,0 +1,662 @@
+[
+  {
+    "subject": "Physics",
+    "topic": "Units and Measurements",
+    "intro": "This chapter covers SI units, dimensional formulae, significant figures and error analysis. JEE Main tests it through dimensional analysis of derived quantities, checking formula consistency, and propagation of errors in measured quantities, usually as quick, concept-based problems.",
+    "keyPoints": [
+      "Dimensional formula of force = [M L T^-2], energy = [M L^2 T^-2]",
+      "Only quantities with same dimensions can be added or equated",
+      "Error in a product x^a y^b: (dz/z) = a(dx/x) + b(dy/y) (maximum)",
+      "Absolute errors add in sums and differences",
+      "Least count = smallest division of the instrument"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "Which physical quantity has the same dimensions as energy per unit volume?",
+        "options": [
+          "Force",
+          "Power",
+          "Pressure",
+          "Momentum"
+        ],
+        "correctIndex": 2,
+        "explanation": "Energy/volume = [M L^2 T^-2]/[L^3] = [M L^-1 T^-2], which is the dimension of pressure."
+      },
+      {
+        "type": "numerical",
+        "question": "The mass of a solid cube is measured with 1% error and its side with 2% error. What is the maximum percentage error in the measured density?",
+        "answer": "7",
+        "explanation": "Density = m/a^3, so the maximum percentage error = 1 + 3(2) = 7.",
+        "verify": "1+3*2"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Kinematics",
+    "intro": "This chapter deals with motion in one and two dimensions, covering equations of uniform acceleration, relative motion, graphs and projectile motion. JEE Main typically asks for graph interpretation, multi-stage motion problems and projectile quantities like range and time of flight.",
+    "keyPoints": [
+      "v = u + at; s = ut + (1/2)at^2; v^2 = u^2 + 2as",
+      "Area under v-t graph = displacement; slope = acceleration",
+      "Projectile: T = 2u sin(theta)/g, R = u^2 sin(2 theta)/g",
+      "Maximum height H = u^2 sin^2(theta)/(2g)",
+      "Relative velocity: v_AB = v_A - v_B"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A car starts from rest with acceleration 2 m/s^2 for 10 s, then moves at constant velocity for the next 5 s. What is the total distance travelled?",
+        "options": [
+          "150 m",
+          "200 m",
+          "100 m",
+          "250 m"
+        ],
+        "correctIndex": 1,
+        "explanation": "Distance in first stage = (1/2)(2)(100) = 100 m; speed = 20 m/s, so next 5 s gives 100 m. Total = 200 m."
+      },
+      {
+        "type": "numerical",
+        "question": "A projectile is launched at 45 degrees to the horizontal with speed 30 m/s on level ground. Taking g = 10 m/s^2, find its horizontal range in metres.",
+        "answer": "90",
+        "explanation": "R = u^2 sin(2 theta)/g = 900 x 1/10 = 90 m.",
+        "verify": "30*30*Math.sin(Math.PI/2)/10"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Laws of Motion",
+    "intro": "This chapter introduces Newton's three laws, free-body diagrams, friction, pulley systems and circular motion dynamics. JEE Main questions usually combine constraint relations, friction on horizontal or inclined surfaces and tension calculations in connected-body setups and on inclined planes.",
+    "keyPoints": [
+      "F = ma; momentum p = mv, F = dp/dt",
+      "Friction: f_s <= mu_s N, f_k = mu_k N",
+      "Atwood machine: a = (m1 - m2)g/(m1 + m2)",
+      "Banking and circular motion: F = mv^2/r",
+      "Pseudo force = -ma in a non-inertial frame"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "Masses 4 kg and 1 kg hang from a light string over a smooth light pulley. Taking g = 10 m/s^2, what is the tension in the string?",
+        "options": [
+          "20 N",
+          "40 N",
+          "8 N",
+          "16 N"
+        ],
+        "correctIndex": 3,
+        "explanation": "a = (4-1)(10)/5 = 6 m/s^2. For the 1 kg mass, T = m(g + a) = 1 x 16 = 16 N."
+      },
+      {
+        "type": "numerical",
+        "question": "A 5 kg block on a rough horizontal surface is pulled by a horizontal force of 60 N. The coefficient of kinetic friction is 0.4. Taking g = 10 m/s^2, find the acceleration in m/s^2.",
+        "answer": "8",
+        "explanation": "Friction = 0.4 x 50 = 20 N. a = (60 - 20)/5 = 8 m/s^2.",
+        "verify": "(60-0.4*5*10)/5"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Work, Energy and Power",
+    "intro": "This chapter covers work done by constant and variable forces, kinetic and potential energy, conservation of energy, power and collisions. JEE Main often tests the work-energy theorem, spring problems and elastic or inelastic collisions in one dimension.",
+    "keyPoints": [
+      "W = F.d = F d cos(theta); W = integral of F dx",
+      "Work-energy theorem: W_net = change in KE",
+      "Spring PE = (1/2)k x^2",
+      "Power P = F.v = dW/dt",
+      "Elastic collision: relative speed of approach = relative speed of separation"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A spring of force constant 200 N/m is compressed by 0.1 m and used to launch a 0.5 kg block on a smooth horizontal surface. What is the speed of the block on leaving the spring?",
+        "options": [
+          "2 m/s",
+          "1 m/s",
+          "4 m/s",
+          "0.5 m/s"
+        ],
+        "correctIndex": 0,
+        "explanation": "(1/2)(200)(0.01) = 1 J = (1/2)(0.5)v^2, so v^2 = 4 and v = 2 m/s."
+      },
+      {
+        "type": "numerical",
+        "question": "A pump lifts 600 kg of water every minute from a well to a height of 20 m. Taking g = 10 m/s^2, find the minimum power of the pump in watts.",
+        "answer": "2000",
+        "explanation": "Work per minute = 600 x 10 x 20 = 120000 J, so power = 120000/60 = 2000 W.",
+        "verify": "600*10*20/60"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Rotational Motion",
+    "intro": "This chapter treats rigid body rotation, moment of inertia, torque, angular momentum and rolling motion. JEE Main commonly asks about the parallel and perpendicular axis theorems, rolling without slipping and conservation of angular momentum in everyday settings.",
+    "keyPoints": [
+      "Torque = I alpha = r x F",
+      "L = I omega; conserved if net torque is zero",
+      "KE of rotation = (1/2) I omega^2",
+      "Solid sphere I = (2/5)MR^2; disc I = (1/2)MR^2; ring I = MR^2",
+      "Rolling: v = omega R, KE = (1/2)Mv^2 (1 + I/(MR^2))"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A solid sphere rolls without slipping on a horizontal surface. What fraction of its total kinetic energy is rotational?",
+        "options": [
+          "2/5",
+          "5/7",
+          "2/7",
+          "1/2"
+        ],
+        "correctIndex": 2,
+        "explanation": "KE_rot/KE_total = (I/MR^2)/(1 + I/MR^2) = (2/5)/(7/5) = 2/7."
+      },
+      {
+        "type": "numerical",
+        "question": "A uniform disc of mass 4 kg and radius 0.5 m is free to rotate about its central axis. A constant torque of 2 N m acts on it. Find its angular acceleration in rad/s^2.",
+        "answer": "4",
+        "explanation": "I = (1/2)(4)(0.25) = 0.5 kg m^2, so alpha = 2/0.5 = 4 rad/s^2.",
+        "verify": "2/(0.5*4*0.5*0.5)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Gravitation",
+    "intro": "This chapter covers Newton's law of gravitation, gravitational field and potential, variation of g, satellites and escape velocity. JEE Main usually asks ratio-based problems on orbital period, orbital speed, escape speed and energy of satellites.",
+    "keyPoints": [
+      "F = G m1 m2 / r^2",
+      "g = GM/R^2; at height h: g' = g R^2/(R+h)^2",
+      "Orbital speed v = sqrt(GM/r); escape speed = sqrt(2GM/R)",
+      "Kepler's third law: T^2 proportional to r^3",
+      "Total energy of satellite = -GMm/(2r)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A satellite orbits very close to the Earth's surface with time period T0. What is the time period of another satellite orbiting at a radius 4R from the Earth's centre?",
+        "options": [
+          "4 T0",
+          "8 T0",
+          "2 T0",
+          "16 T0"
+        ],
+        "correctIndex": 1,
+        "explanation": "T is proportional to r^(3/2), so T = (4)^(3/2) T0 = 8 T0."
+      },
+      {
+        "type": "numerical",
+        "question": "The escape speed from the Earth's surface is 11.2 km/s. A planet has 8 times the mass and 2 times the radius of the Earth. What is its escape speed in km/s?",
+        "answer": "22.4",
+        "explanation": "v_e is proportional to sqrt(M/R), so factor = sqrt(8/2) = 2 and v = 22.4 km/s.",
+        "verify": "11.2*Math.sqrt(8/2)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Properties of Solids and Liquids",
+    "intro": "This chapter covers elasticity, stress and strain, fluid statics and dynamics, surface tension, viscosity and thermal properties of matter. JEE Main tests Bernoulli's theorem, capillary rise, terminal velocity, calorimetry and heat transfer through direct formula-based problems.",
+    "keyPoints": [
+      "Young's modulus Y = (F/A)/(delta L / L)",
+      "Pressure at depth: P = P0 + rho g h",
+      "Bernoulli: P + (1/2) rho v^2 + rho g h = constant",
+      "Capillary rise h = 2T cos(theta)/(rho g r)",
+      "Heat: Q = m s dT; conduction rate = kA dT/L"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "Water rises to a height h in a capillary tube of radius r. If the tube is replaced by one of radius r/2 made of the same material, the water rises to a height",
+        "options": [
+          "h/2",
+          "4h",
+          "h",
+          "2h"
+        ],
+        "correctIndex": 3,
+        "explanation": "Capillary height is inversely proportional to the radius, so halving r doubles h."
+      },
+      {
+        "type": "numerical",
+        "question": "Water flows out of a small hole in the side of a large open tank, 1.25 m below the free surface of water. Taking g = 10 m/s^2, find the speed of efflux in m/s.",
+        "answer": "5",
+        "explanation": "By Torricelli's theorem v = sqrt(2gh) = sqrt(2 x 10 x 1.25) = sqrt(25) = 5 m/s.",
+        "verify": "Math.sqrt(2*10*1.25)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Thermodynamics",
+    "intro": "This chapter covers the laws of thermodynamics, thermodynamic processes, heat engines and entropy ideas. JEE Main usually tests work and heat in isothermal, adiabatic, isobaric and isochoric processes, P-V diagrams and Carnot engine efficiency and cyclic processes.",
+    "keyPoints": [
+      "First law: dQ = dU + dW",
+      "Isothermal: PV = constant; adiabatic: PV^gamma = constant",
+      "Work done = area under P-V curve",
+      "Cp - Cv = R; gamma = Cp/Cv",
+      "Carnot efficiency = 1 - T2/T1 (temperatures in kelvin)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A monatomic ideal gas is heated at constant pressure. What fraction of the heat supplied is converted into work done by the gas?",
+        "options": [
+          "3/5",
+          "2/5",
+          "1",
+          "2/3"
+        ],
+        "correctIndex": 1,
+        "explanation": "W/Q = R/Cp = R/((5/2)R) = 2/5."
+      },
+      {
+        "type": "numerical",
+        "question": "A Carnot engine works between a source at 600 K and a sink at 360 K. If it absorbs 1000 J of heat from the source per cycle, find the work done per cycle in joules.",
+        "answer": "400",
+        "explanation": "Efficiency = 1 - 360/600 = 0.4, so W = 0.4 x 1000 = 400 J.",
+        "verify": "Math.round(1000*(1-360/600))"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Kinetic Theory of Gases",
+    "intro": "This chapter develops the molecular model of ideal gases, linking pressure and temperature to molecular motion. JEE Main asks about rms speed, degrees of freedom, equipartition of energy, specific heats and mean free path in short numerical or ratio problems.",
+    "keyPoints": [
+      "Pressure P = (1/3) rho v_rms^2",
+      "v_rms = sqrt(3RT/M)",
+      "Average KE per molecule = (3/2) k T",
+      "Energy per degree of freedom = (1/2) k T",
+      "Monatomic Cv = (3/2)R; diatomic (rigid) Cv = (5/2)R"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "At the same temperature, what is the ratio of the rms speed of hydrogen molecules to that of oxygen molecules? (Molar masses: H2 = 2, O2 = 32)",
+        "options": [
+          "4 : 1",
+          "16 : 1",
+          "2 : 1",
+          "1 : 4"
+        ],
+        "correctIndex": 0,
+        "explanation": "v_rms is proportional to 1/sqrt(M), so ratio = sqrt(32/2) = 4."
+      },
+      {
+        "type": "numerical",
+        "question": "Two moles of a rigid diatomic gas are heated at constant volume from 300 K to 400 K. Taking R = 8.3 J/(mol K), find the heat absorbed in joules.",
+        "answer": "4150",
+        "explanation": "Q = n Cv dT = 2 x (5/2)(8.3) x 100 = 4150 J.",
+        "verify": "Math.round(2*2.5*8.3*100)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Oscillations and Waves",
+    "intro": "This chapter covers simple harmonic motion, spring-mass and pendulum systems, wave motion, superposition, standing waves, beats and the Doppler effect. JEE Main emphasises time period formulas, resonance in strings and pipes, and Doppler shift calculations.",
+    "keyPoints": [
+      "SHM: x = A sin(omega t + phi), a = -omega^2 x",
+      "Spring-mass: T = 2 pi sqrt(m/k); pendulum: T = 2 pi sqrt(L/g)",
+      "Wave speed v = f lambda; string: v = sqrt(T/mu)",
+      "Closed pipe: f = (2n+1) v/(4L); open pipe: f = n v/(2L)",
+      "Beat frequency = |f1 - f2|"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A 0.5 kg block attached to a spring of constant 200 N/m executes SHM. What is its time period?",
+        "options": [
+          "pi/5 s",
+          "10 pi s",
+          "pi/10 s",
+          "pi/20 s"
+        ],
+        "correctIndex": 2,
+        "explanation": "T = 2 pi sqrt(0.5/200) = 2 pi x 0.05 = pi/10 s."
+      },
+      {
+        "type": "numerical",
+        "question": "A closed organ pipe has length 0.85 m. If the speed of sound is 340 m/s, find the fundamental frequency in Hz.",
+        "answer": "100",
+        "explanation": "For a closed pipe f = v/(4L) = 340/(3.4) = 100 Hz.",
+        "verify": "Math.round(340/(4*0.85))"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Electrostatics",
+    "intro": "This chapter covers Coulomb's law, electric field, potential, Gauss's law, capacitors and dielectrics. JEE Main tests field and potential from charge distributions, Gauss's law symmetry applications, and series-parallel combinations of capacitors with stored energy calculations.",
+    "keyPoints": [
+      "Coulomb force F = k q1 q2/r^2, k = 9 x 10^9 N m^2/C^2",
+      "E = F/q; V = kq/r; E = -dV/dr",
+      "Gauss's law: flux = q_enclosed/epsilon_0",
+      "Capacitance C = epsilon_0 A/d; energy U = (1/2)CV^2",
+      "Series: 1/C = sum(1/Ci); parallel: C = sum(Ci)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "Capacitors of 3 microfarad and 6 microfarad are connected in series across a 9 V battery. What is the potential difference across the 3 microfarad capacitor?",
+        "options": [
+          "3 V",
+          "4.5 V",
+          "6 V",
+          "9 V"
+        ],
+        "correctIndex": 2,
+        "explanation": "C_eq = 2 microfarad, so Q = 18 microcoulomb. V across 3 microfarad = 18/3 = 6 V."
+      },
+      {
+        "type": "numerical",
+        "question": "Two point charges of 2 microcoulomb each are placed 0.3 m apart in vacuum. Taking k = 9 x 10^9 N m^2/C^2, find the force between them in millinewtons.",
+        "answer": "400",
+        "explanation": "F = 9e9 x (2e-6)^2/(0.3)^2 = 0.4 N = 400 mN.",
+        "verify": "Math.round(9e9*2e-6*2e-6/(0.3*0.3)*1000)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Current Electricity",
+    "intro": "This chapter covers Ohm's law, resistivity, drift velocity, series-parallel circuits, Kirchhoff's laws, cells and measuring instruments. JEE Main frequently asks about equivalent resistance, Wheatstone bridge balance, internal resistance, potentiometer and meter bridge setups in numerical form.",
+    "keyPoints": [
+      "V = IR; R = rho L/A",
+      "Drift velocity: I = n e A v_d",
+      "Kirchhoff: sum of currents at a node = 0; sum of emf around a loop = 0",
+      "Terminal voltage V = E - I r",
+      "Power P = VI = I^2 R = V^2/R"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A cell of emf 12 V and internal resistance 1 ohm is connected to an external resistor of 5 ohm. What is the terminal voltage of the cell?",
+        "options": [
+          "12 V",
+          "11 V",
+          "6 V",
+          "10 V"
+        ],
+        "correctIndex": 3,
+        "explanation": "I = 12/6 = 2 A, so V = E - Ir = 12 - 2 = 10 V."
+      },
+      {
+        "type": "numerical",
+        "question": "A uniform wire of resistance 10 ohm is uniformly stretched to twice its original length. What is its new resistance in ohm?",
+        "answer": "40",
+        "explanation": "Volume stays constant, so area halves; R is proportional to L^2, giving 4 x 10 = 40 ohm.",
+        "verify": "10*2*2"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Magnetic Effects of Current and Magnetism",
+    "intro": "This chapter covers magnetic fields due to currents using Biot-Savart and Ampere's laws, forces on moving charges and conductors, and magnetic properties of materials. JEE Main tests circular motion of charges in fields, field of wires and loops, and torque on current loops.",
+    "keyPoints": [
+      "Force on charge: F = q v x B; radius r = mv/(qB)",
+      "Straight wire: B = mu0 I/(2 pi r); mu0/(4 pi) = 10^-7 T m/A",
+      "Loop centre: B = mu0 I/(2R)",
+      "Force on wire: F = I L x B",
+      "Torque on loop: tau = M x B, M = N I A"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A proton and an alpha particle with equal kinetic energies enter a uniform magnetic field perpendicular to it. What is the ratio of the radii of their circular paths (proton : alpha)?",
+        "options": [
+          "1 : 2",
+          "1 : 1",
+          "2 : 1",
+          "1 : 4"
+        ],
+        "correctIndex": 1,
+        "explanation": "r = sqrt(2mK)/(qB). For alpha, m is 4 times and q is 2 times, so r is unchanged. Ratio = 1 : 1."
+      },
+      {
+        "type": "numerical",
+        "question": "A long straight wire carries a current of 10 A. Taking mu0/(4 pi) = 10^-7 T m/A, find the magnetic field at a distance 0.05 m from the wire in microtesla.",
+        "answer": "40",
+        "explanation": "B = 2 x 10^-7 x 10/0.05 = 4 x 10^-5 T = 40 microtesla.",
+        "verify": "Math.round(2e-7*10/0.05*1e6)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Electromagnetic Induction and Alternating Currents",
+    "intro": "This chapter covers Faraday's and Lenz's laws, motional emf, self and mutual inductance, and alternating current circuits including LCR resonance and transformers. JEE Main tests induced emf calculations, phase relations and resonance conditions in series circuits.",
+    "keyPoints": [
+      "emf = -d(flux)/dt",
+      "Motional emf = B l v",
+      "Inductor energy U = (1/2) L I^2; emf = -L dI/dt",
+      "Z = sqrt(R^2 + (XL - XC)^2); XL = omega L, XC = 1/(omega C)",
+      "Resonance: omega = 1/sqrt(LC)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A series LCR circuit has L = 0.1 H and C = 10 microfarad. What is the resonant angular frequency?",
+        "options": [
+          "1000 rad/s",
+          "100 rad/s",
+          "10000 rad/s",
+          "31.6 rad/s"
+        ],
+        "correctIndex": 0,
+        "explanation": "omega = 1/sqrt(LC) = 1/sqrt(0.1 x 10^-5) = 1/sqrt(10^-6) = 1000 rad/s."
+      },
+      {
+        "type": "numerical",
+        "question": "A metal rod of length 0.5 m moves at 8 m/s perpendicular to a uniform magnetic field of 0.5 T, with the rod perpendicular to both. Find the induced emf across its ends in volts.",
+        "answer": "2",
+        "explanation": "emf = B l v = 0.5 x 0.5 x 8 = 2 V.",
+        "verify": "0.5*0.5*8"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Electromagnetic Waves",
+    "intro": "This chapter covers the nature of electromagnetic waves, displacement current, the electromagnetic spectrum and relations between electric and magnetic field amplitudes. JEE Main tests wave speed relations, field amplitude ratios, energy density and the order and uses of spectrum regions.",
+    "keyPoints": [
+      "c = 1/sqrt(mu0 epsilon0) = 3 x 10^8 m/s",
+      "E0/B0 = c; E and B are perpendicular and in phase",
+      "Displacement current I_d = epsilon0 d(flux_E)/dt",
+      "Intensity I = (1/2) epsilon0 c E0^2",
+      "Spectrum by increasing frequency: radio, microwave, IR, visible, UV, X-ray, gamma"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "The electric field amplitude of a plane electromagnetic wave in vacuum is 90 V/m. Taking c = 3 x 10^8 m/s, what is the amplitude of the magnetic field?",
+        "options": [
+          "2.7 x 10^-5 T",
+          "3 x 10^-9 T",
+          "3 x 10^-7 T",
+          "9 x 10^-6 T"
+        ],
+        "correctIndex": 2,
+        "explanation": "B0 = E0/c = 90/(3 x 10^8) = 3 x 10^-7 T."
+      },
+      {
+        "type": "numerical",
+        "question": "A light wave in vacuum has frequency 6 x 10^14 Hz. Taking c = 3 x 10^8 m/s, find its wavelength in nanometres.",
+        "answer": "500",
+        "explanation": "lambda = c/f = 3e8/6e14 = 5 x 10^-7 m = 500 nm.",
+        "verify": "Math.round(3e8/6e14*1e9)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Ray and Wave Optics",
+    "intro": "This chapter covers reflection, refraction, lenses, mirrors, optical instruments, interference, diffraction and polarisation. JEE Main tests lens and mirror formula problems, prism and total internal reflection, Young's double slit fringe width and single slit diffraction conditions.",
+    "keyPoints": [
+      "Mirror: 1/v + 1/u = 1/f; lens: 1/v - 1/u = 1/f",
+      "Snell's law: n1 sin(i) = n2 sin(r)",
+      "Fringe width beta = lambda D/d",
+      "Single slit minima: a sin(theta) = n lambda",
+      "Brewster's law: tan(theta_p) = n"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "In a Young's double slit experiment, d = 0.3 mm, D = 1.5 m and lambda = 600 nm. What is the fringe width?",
+        "options": [
+          "1.2 mm",
+          "3 mm",
+          "6 mm",
+          "0.3 mm"
+        ],
+        "correctIndex": 1,
+        "explanation": "beta = lambda D/d = (600e-9 x 1.5)/(0.3e-3) = 3e-3 m = 3 mm."
+      },
+      {
+        "type": "numerical",
+        "question": "An object is placed 30 cm in front of a convex lens of focal length 20 cm. Find the distance of the image from the lens in cm.",
+        "answer": "60",
+        "explanation": "1/v = 1/f + 1/u = 1/20 - 1/30 = 1/60, so v = 60 cm.",
+        "verify": "1/(1/20-1/30)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Dual Nature of Matter and Radiation",
+    "intro": "This chapter covers the photoelectric effect, Einstein's equation, de Broglie waves and the Davisson-Germer experiment. JEE Main tests threshold frequency, stopping potential, dependence on intensity and frequency, and de Broglie wavelength for accelerated charged particles.",
+    "keyPoints": [
+      "Photon energy E = hf = hc/lambda; hc = 12375 eV Angstrom",
+      "Einstein: K_max = hf - phi; eV_stop = K_max",
+      "Threshold frequency f0 = phi/h",
+      "de Broglie: lambda = h/p = h/sqrt(2mK)",
+      "Electron through V volts: lambda(Angstrom) = sqrt(150/V)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "Light of photon energy 5 eV falls on a metal of work function 2 eV, giving a stopping potential V0. If the intensity of light is doubled keeping frequency same, the stopping potential becomes",
+        "options": [
+          "6 V",
+          "1.5 V",
+          "3 V",
+          "5 V"
+        ],
+        "correctIndex": 2,
+        "explanation": "Stopping potential depends on frequency, not intensity. V0 = (5 - 2) = 3 V remains unchanged."
+      },
+      {
+        "type": "numerical",
+        "question": "The de Broglie wavelength of an electron accelerated from rest through a potential difference V is given by lambda(in Angstrom) = sqrt(150/V). What potential difference in volts gives a wavelength of 0.5 Angstrom?",
+        "answer": "600",
+        "explanation": "Squaring gives 0.25 = 150/V, so V = 600 V.",
+        "verify": "150/(0.5*0.5)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Atoms and Nuclei",
+    "intro": "This chapter covers atomic models, the Bohr model of hydrogen, spectral series, nuclear size, binding energy, radioactivity and nuclear reactions. JEE Main tests energy levels, spectral line calculations, half-life and decay problems, and mass defect energy.",
+    "keyPoints": [
+      "Bohr: E_n = -13.6/n^2 eV; r_n = 0.53 n^2 Angstrom",
+      "1/lambda = R(1/n1^2 - 1/n2^2)",
+      "N = N0 (1/2)^(t/T_half)",
+      "Radius of nucleus R = R0 A^(1/3)",
+      "Energy released = (mass defect) x 931.5 MeV/u"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A hydrogen atom makes a transition from the n = 3 level to the n = 2 level. What is the energy of the emitted photon, to two decimals?",
+        "options": [
+          "3.40 eV",
+          "10.20 eV",
+          "0.66 eV",
+          "1.89 eV"
+        ],
+        "correctIndex": 3,
+        "explanation": "E = 13.6(1/4 - 1/9) = 13.6 x 5/36 = 1.89 eV."
+      },
+      {
+        "type": "numerical",
+        "question": "A radioactive sample has a half-life of 10 minutes. Starting with 800 undecayed nuclei, how many nuclei remain undecayed after 40 minutes?",
+        "answer": "50",
+        "explanation": "40 minutes is 4 half-lives, so N = 800/2^4 = 50.",
+        "verify": "800/Math.pow(2,40/10)"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Electronic Devices",
+    "intro": "This chapter covers semiconductors, p-n junction diodes, rectifiers, Zener diodes, transistors as amplifiers and switches, and basic logic gates. JEE Main usually tests diode biasing, rectifier output frequency, transistor current relations and truth tables of gate combinations.",
+    "keyPoints": [
+      "Intrinsic semiconductor: n_e = n_h; doping creates n-type or p-type",
+      "Forward-biased diode conducts; reverse-biased blocks",
+      "Full-wave rectifier ripple frequency = 2 x input frequency",
+      "Transistor: I_E = I_B + I_C; beta = I_C/I_B",
+      "NAND and NOR are universal gates"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A full-wave rectifier is fed with an AC input of frequency 50 Hz. What is the frequency of the ripple in its output?",
+        "options": [
+          "100 Hz",
+          "50 Hz",
+          "25 Hz",
+          "200 Hz"
+        ],
+        "correctIndex": 0,
+        "explanation": "Both half cycles are rectified, so the output has two pulses per input cycle, giving 100 Hz."
+      },
+      {
+        "type": "numerical",
+        "question": "In a common-emitter transistor, the collector current is 3 mA and the emitter current is 3.05 mA. Find the current gain beta (I_C/I_B).",
+        "answer": "60",
+        "explanation": "I_B = I_E - I_C = 0.05 mA, so beta = 3/0.05 = 60.",
+        "verify": "Math.round(3/(3.05-3))"
+      }
+    ]
+  },
+  {
+    "subject": "Physics",
+    "topic": "Communication Systems",
+    "intro": "This chapter covers the elements of a communication system, bandwidth, modulation, and propagation of ground, sky and space waves. JEE Main tests amplitude modulation index, sideband and bandwidth calculations, and line-of-sight range of transmitting antennas.",
+    "keyPoints": [
+      "Modulation index m = Am/Ac",
+      "AM bandwidth = 2 x highest message frequency",
+      "Sidebands at fc + fm and fc - fm",
+      "Line-of-sight range d = sqrt(2 R h)",
+      "Total LOS range between two antennas = sqrt(2 R h1) + sqrt(2 R h2)"
+    ],
+    "samples": [
+      {
+        "type": "mcq",
+        "question": "A carrier wave of amplitude 10 V is amplitude modulated by a message signal of amplitude 4 V. What is the modulation index?",
+        "options": [
+          "2.5",
+          "0.4",
+          "0.04",
+          "0.6"
+        ],
+        "correctIndex": 1,
+        "explanation": "m = Am/Ac = 4/10 = 0.4."
+      },
+      {
+        "type": "numerical",
+        "question": "A TV transmitting antenna is 20 m tall. Taking the Earth's radius as 6.4 x 10^6 m, find the maximum line-of-sight range in km.",
+        "answer": "16",
+        "explanation": "d = sqrt(2Rh) = sqrt(2 x 6.4e6 x 20) = sqrt(2.56e8) = 16000 m = 16 km.",
+        "verify": "Math.sqrt(2*6.4e6*20)/1000"
+      }
+    ]
+  }
+]
