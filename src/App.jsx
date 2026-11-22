@@ -155,7 +155,7 @@ export default function App() {
   const [numericInput, setNumericInput] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
-  const [source, setSource] = useState("ai");
+  const source = "ai"; // AI-written questions only (PYQ options removed)
   const [pyqBank, setPyqBank] = useState([]);
   const [notice, setNotice] = useState(null);
   const resultsRef = useRef(null);
@@ -1086,33 +1086,6 @@ export default function App() {
               </div>
             );
           })}
-
-          <div className="jee-field-block">
-            <label>Question source</label>
-            <div className="jee-subject-chips">
-              {SOURCES.map((o) => (
-                <button
-                  type="button"
-                  key={o.id}
-                  className={"jee-chip" + (source === o.id ? " active" : "")}
-                  onClick={() => setSource(o.id)}
-                >
-                  {o.label}
-                </button>
-              ))}
-            </div>
-            <p className="jee-source-hint">
-              {source === "ai" && "Fresh questions written by AI in the style of JEE Main."}
-              {source === "mix" &&
-                (pyqBank.length === 0
-                  ? "No previous year questions are loaded yet, so this will use AI-written questions."
-                  : `About half from real previous year papers (${availablePyq} available for your topics), the rest written by AI.`)}
-              {source === "pyq" &&
-                (pyqBank.length === 0
-                  ? "No previous year questions are loaded yet. Pick another option for now."
-                  : `Only real previous year questions, labelled with exam, year and shift (${availablePyq} available for your topics).`)}
-            </p>
-          </div>
 
           <div className="jee-row">
             <div className="jee-field">
